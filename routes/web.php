@@ -8,6 +8,7 @@ use App\Http\Controllers\InfluncersGroupController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Influencer;
 use App\Services\FacebookInfluencerService;
 use App\Services\InfluencerService;
 use Illuminate\Support\Facades\Cache;
@@ -41,6 +42,12 @@ Route::middleware('guest')->group(function () {
     });
 });
 
+Route::get('campaigns/share/{campaign}', [CampaignController::class, 'share'])->name('campaign.share');
+Route::get('campaigns/view', [CampaignController::class, 'viewCampaign'])->name('campaign.view');
+Route::post('campaigns/respond', [CampaignController::class, 'recordResponse'])->name('campaign.respond');
+
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/home', function () {
@@ -52,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('profile/password', [ProfileController::class, 'changePassword'])->name('changePassword');
 
     Route::get('platform/{platform}', [PlatformController::class, 'platform'])->name('platform.search');
-    Route::get('creator-profile/{influencer_id}', function($influencer_id){
+    Route::get('creator-profile/{influencer_id}', function ($influencer_id) {
         return view('influencer', compact('influencer_id'));
     })->name('show.influencer');
 
@@ -117,11 +124,45 @@ Route::middleware(['auth'])->group(function () {
 //     }
 
 //     Cache::put('facebook_influencer_details', $details, now()->addDays(30));
-   
+
 //     // Debug or return the results
 //     echo json_encode($details, JSON_PRETTY_PRINT);
 // });
 
+Route::get('test', function () {
+
+    $client = new \GuzzleHttp\Client();
+
+    $response = $client->request('GET', 'https://dev.creatordb.app/v2/instagramBasic?instagramId=goodalicia', [
+        'headers' => [
+            'Accept' => 'application/json',
+            'apiId' => 'LE6DPZQkR3TQShxofXoD2j8qCBu1-f0jti665m1t50dwDD12W',
+        ],
+    ]);
+
+    $data = json_decode($response->getBody(), true); // Use `true` to decode as an array
+
+    Cache::put('instagram_data', $data, now()->addDays(30));
+
+    $cachedData = Cache::get('instagram_data');
+
+
+    $validatedData = [
+        'selectedGroups' =>  [1],
+        'selectInfluencer' =>  $cachedData['data']['basicInstagram'],
+    ];
+
+    foreach ($validatedData['selectedGroups'] as $groupId) {
+        Influencer::create([
+            'influncers_group_id' => $groupId,
+            'influnencer_id' => $validatedData['selectInfluencer']['instagramId'],
+            'platform' => 'instagram',
+            'content' => json_encode($validatedData['selectInfluencer']),
+        ]);
+    }
+
+    dd($cachedData);
+});
 Route::get('try', function (FacebookInfluencerService $service) {
 
     //  dd(Cache::get('facebook_details_2000'));
@@ -135,16 +176,16 @@ Route::get('try', function (FacebookInfluencerService $service) {
         'searchEndpoint' => 'https://dev.creatordb.app/v2/tiktokAdvancedSearch',
         'detailsEndpoint' => 'https://dev.creatordb.app/v2/tiktokBasic',
     ];
-    
+
     $service = new InfluencerService($tiktokConfig);
-    
+
     // Fetch details for Facebook influencers
     $platform = 'tiktok';
     $followersCount = 3000;
 
     $details = $service->fetchPlatformInfluencerDetails($platform, $followersCount);
     // dd($details);
-    
+
 });
 
 Route::get('/proxy-image', function () {
@@ -157,28 +198,3 @@ Route::get('/proxy-image', function () {
 
     return response('Image not found', 404);
 });
-
-
-// Route::get('/proxy-image', function () {
-//     $imageUrl = request('url');
-
-//     $cacheKey = 'proxy_image_' . md5($imageUrl);
-
-//     // Check if the image is already cached
-//     if (Cache::has($cacheKey)) {
-//         return response(Cache::get($cacheKey), 200)->header('Content-Type', 'image/jpeg');
-//     }
-
-//     // Fetch the image from the external source
-//     $response = Http::get($imageUrl);
-
-//     if ($response->ok()) {
-//         // Cache only if the image is found
-//         Cache::put($cacheKey, $response->body(), now()->addDays(7));
-//         return response($response->body(), 200)->header('Content-Type', 'image/jpeg');
-//     }
-
-//     // Do not cache the "not found" response
-//     return response('Image not found', 404);
-// });
-

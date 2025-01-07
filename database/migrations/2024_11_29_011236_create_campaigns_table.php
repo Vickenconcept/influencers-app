@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use function Laravel\Prompts\table;
+
 return new class extends Migration
 {
     /**
@@ -13,6 +15,15 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('title'); 
+            $table->text('description');
+            $table->text('task')->nullable(); 
+            $table->integer('budget'); 
+            $table->date('start_date')->nullable(); 
+            $table->date('end_date')->nullable(); 
+            $table->string('status')->default('pending'); 
             $table->timestamps();
         });
     }

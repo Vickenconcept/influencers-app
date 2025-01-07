@@ -45,6 +45,13 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('campaigns.index') }}"
+                    class="flex items-center px-2 py-1 transition duration-75 rounded-lg group hover:bg-orange-500 hover:bg-opacity-25">
+                    <i class='bx bx-image text-xl mr-2'></i>
+                    <span class="text-sm">campaign</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('auth.logout') }}"
                     class="flex items-center px-2 py-1 transition duration-75 rounded-lg group hover:bg-orange-500 hover:bg-opacity-25">
                     <i class='bx bx-exit text-xl mr-2'></i>

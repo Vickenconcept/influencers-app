@@ -49,4 +49,7 @@ class User extends Authenticatable
     public function influncersGroups(){
         return $this->hasMany(InfluncersGroup::class, 'user_id');
     }
+    public function campaigns(){
+        return $this->hasMany(Campaign::class, 'user_id');
+    }
 }
