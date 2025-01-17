@@ -1,7 +1,8 @@
-<div>
-    <div x-data="{ openModal: false, }">
+    <div x-data="{ openModal: false, }" class="overflow-y-auto h-screen pb-28">
+        <h3 class="capitalize font-bold text-3xl pb-10">{{$group->name}}</h3>
+        {{-- overflow-auto lg:overflow-visible --}}
 
-        <div class="overflow-auto lg:overflow-visible ">
+        <div class=" ">
             <table class="table text-gray-700 border-separate space-y-6 text-sm w-full">
                 <thead class="bg-gray-200 text-gray-800">
                     <tr>
@@ -34,9 +35,35 @@
                                             @isset($content->tiktokName)
                                                 {{ $content->tiktokName }}
                                             @endisset
+                                            @isset($content->instagramName)
+                                                {{ $content->instagramName }}
+                                            @endisset
+                                            @isset($content->youtubeName)
+                                                {{ $content->youtubeName }}
+                                            @endisset
 
                                         </div>
-                                        <div class="text-gray-800">mail@rgmail.com</div>
+                                        <div class="text-gray-800 mt-2">
+                                            @if (json_decode($influencer->emails, true) != null)
+                                                @if (count(json_decode($influencer->emails, true)) > 0)
+                                                    <select class="rounded-lg border-0 py-1 w-24 text-sm font-semibold">
+                                                        <option value="" selected disabled>Emails</option>
+                                                        @foreach (json_decode($influencer->emails, true) ?? [] as $email)
+                                                            <option value="{{ $email }}">{{ $email }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                @endif
+                                            @else
+                                                <button
+                                                    wire:click="getEmails('{{ $influencer->id }}', '{{ isset($content->youtubeId) ? $content->youtubeId : '' }}')"
+                                                    class="bg-white rounded-lg px-2 py-1 text-sm  focus:ring-2 focus:ring-gray-400 ">Get
+                                                    email</button>
+                                                <button
+                                                    wire:click="checkContactWithAI({{ json_encode($influencer->content, true) }}, '{{ $influencer->id }}')"
+                                                    class="bg-white rounded-lg px-2 py-1 text-sm  focus:ring-2 focus:ring-gray-400 ">Check with AI</button>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </td>
@@ -59,6 +86,9 @@
                                 @isset($content->followers)
                                     {{ format_number($content->followers) }}
                                 @endisset
+                                @isset($content->subscribers)
+                                    {{ format_number($content->subscribers) }}
+                                @endisset
                             </td>
                             <td class="p-3">
                                 <span class="bg-green-400 text-gray-50 rounded-md px-2">available</span>
@@ -69,7 +99,9 @@
                                 @endisset
                             </td>
                             <td class="p-3 ">
-                                <button @click="openModal = true" wire:click="setInfluencer('{{ $influencer->id }}')">Send Campaign</button>
+                                <button @click="openModal = true"
+                                    wire:click="setInfluencer('{{ $influencer->id }}', '{{ isset($influencer->emails) ? $influencer->emails : '' }}')">Send
+                                    Campaign </button>
                             </td>
                         </tr>
                     @endforeach
@@ -79,7 +111,7 @@
         </div>
 
         {{-- openModal modal --}}
-        <div class="fixed items-center justify-center  flex -top-10 left-0 mx-auto w-full h-full bg-gray-600 bg-opacity-30 z-50 transition duration-1000 ease-in-out"
+        <div class="fixed items-center justify-center  flex top-0 left-0 mx-auto w-full h-full bg-gray-600 bg-opacity-30 z-50 transition duration-1000 ease-in-out"
             x-show="openModal" x-cloak>
             <div @click.away="openModal = false"
                 class="bg-white w-[90%] md:w-[50%]  shadow-inner  border rounded-2xl overflow-auto  py-6 px-8 transition-all relative duration-700">
@@ -96,8 +128,9 @@
 
                     <ul class="my-4 space-y-3 h-[200px] overflow-y-auto">
                         @foreach ($campaigns as $campaign)
-                            <li class="border-2 rounded-lg" x-data="{openDrawer: false}">
-                                <div for="{{ $campaign->id }}" @click="openDrawer = true" @click.away="openDrawer = false" wire:click="setCampaign('{{$campaign->uuid}}')"
+                            <li @click.away="openDrawer = false" class="border-2 rounded-lg" x-data="{ openDrawer: false }">
+                                <div for="{{ $campaign->id }}" @click="openDrawer = true"
+                                     wire:click="setCampaign('{{ $campaign->uuid }}')"
                                     class=" cursor-pointer flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-50 hover:bg-gray-100 campaign hover:shadow ">
                                     <svg aria-hidden="true" class="h-4" viewBox="0 0 40 38" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -179,14 +212,31 @@
                                             d="M25.5283 5.17383L23.0847 11.7736L22.5661 20.6894L22.3677 23.4839L22.352 30.6225H17.6471L17.6318 23.4973L17.4327 20.6869L16.9139 11.7736L14.4707 5.17383H25.5283Z"
                                             fill="#F5841F" />
                                     </svg>
-                                    <span class="flex-1 ms-3 whitespace-nowrap capitalize">{{ $campaign->title }}</span>
+                                    <span
+                                        class="flex-1 ms-3 whitespace-nowrap capitalize">{{ $campaign->title }}</span>
                                 </div>
                                 <div class="h-40" x-show="openDrawer" x-cloak>
                                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Atque voluptatum
                                         nam labore laboriosam vel corporis quisquam saepe, aspernatur quo eveniet,
                                         facilis expedita sint ut harum doloribus laborum omnis esse provident.</p>
 
-                                        <a href="{{$invitationLink}}">Invitation Link</a>
+                                    
+                                   <div class="flex space-x-3 items-center">
+                                    <div class="mt-2">
+                                        @if (json_decode($emails, true) != null)
+                                            @if (count(json_decode($emails, true)) > 0)
+                                                <select class="rounded-lg border-2 border-gray-200   text-sm font-semibold bg-gray-50">
+                                                    <option value="" selected disabled>Emails</option>
+                                                    @foreach (json_decode($emails, true) ?? [] as $email)
+                                                        <option value="{{ $email }}">{{ $email }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                        @endif
+                                    </div>
+                                    <a href="{{ $invitationLink }}">Invitation Link</a>
+                                   </div>
                                 </div>
                             </li>
                         @endforeach
@@ -196,5 +246,16 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // window.addEventListener('refreshPage', function() {
+                //     location.reload();
+                // });
+                Livewire.on('refreshPage', () => {
+                    location.reload();
+                });
+            });
+        </script>
+
     </div>
-</div>

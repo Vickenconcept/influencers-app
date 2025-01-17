@@ -94,12 +94,15 @@ class CampaignController extends Controller
             $campaignId = $params['campaign_id'];
             $influencerId = $params['influencer_id'];
 
-            // Find the campaign and influencer
             $campaign = Campaign::findOrFail($campaignId);
             $influencer = Influencer::findOrFail($influencerId);
 
-            // Update the response in the pivot table
-            $campaign->influencers()->updateExistingPivot($influencerId, ['status' => $response]);
+
+            $campaign->influencers()->syncWithoutDetaching([
+                $influencer->id => ['task_status' => $response],
+            ]);
+            // $campaign->influencers()->updateExistingPivot($influencerId, ['status' => $response]);
+            dd($campaign, $influencer);
 
             return redirect()->route('campaign.thankyou')->with('status', 'Your response has been recorded.');
         } catch (\Exception $e) {

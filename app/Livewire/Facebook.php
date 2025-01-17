@@ -13,7 +13,6 @@ class Facebook extends Component
     public $details = [];
     public
         $platform = 'facebook',
-        $op = '<',
         $category = null,
         $categoryBusiness = null,
         $isVerified = null,
@@ -21,17 +20,21 @@ class Facebook extends Component
         $isPrivateAccount = null,
         $followers = 10000,
         $engageRate = null,
-        $country = null;
+        $country = null,
+        $lang = null;
 
     public $selectedGroups = [], $selectInfluencer;
-
-
     public $groups, $name, $description;
+
+    public $followersRange = '',
+        $minRange,
+        $maxRange;
+
 
     public function mount()
     {
         $this->followers = 1000;
-        $this->details =  Cache::get("facebook_details_1000") ?? [];
+        $this->details =  Cache::get("{$this->platform}_details") ?? [];
 
         $this->groups = InfluncersGroup::latest()->get();
     }
@@ -48,26 +51,25 @@ class Facebook extends Component
         // Fetch details for facebook influencers
         $this->followers = 4000;
 
-        $this->details = $service->fetchPlatformInfluencerDetails($this->platform,
-        $this->op,
-        $this->category,
-        $this->categoryBusiness,
-        $this->isVerified,
-        $this->isBusinessAccount,
-        $this->isPrivateAccount,
-        $this->followers,
-        $this->engageRate,
-        $this->country);
+        $this->details = $service->fetchPlatformInfluencerDetails(
+            $this->platform,
+            $this->category,
+            $this->categoryBusiness,
+            $this->isVerified,
+            $this->isBusinessAccount,
+            $this->isPrivateAccount,
+            $this->followers = $this->getFiltersByRange(),
+            $this->engageRate,
+            $this->country,
+            $this->lang,
+
+        );
         // $this->details = $service->fetchPlatformInfluencerDetails($this->platform, $this->followers);
         // dd($this->details);
         return $this->details;
     }
 
 
-    public function loadMore()
-    {
-        $this->details = Cache::get("{$this->platform}_details_{$this->followers}_{$this->op}") ?? [];
-    }
 
 
     public function creatGroup()
@@ -79,7 +81,7 @@ class Facebook extends Component
 
         $user = auth()->user();
         $user->influncersGroups()->create($validateData);
-        
+
         $this->groups = InfluncersGroup::latest()->get();
         $this->name = '';
         $this->description = '';
@@ -107,6 +109,50 @@ class Facebook extends Component
             ]);
         }
     }
+
+
+
+    public function getFiltersByRange()
+    {
+        $filters = [];
+
+        // Apply custom range if both min and max are provided
+        if ($this->minRange && $this->maxRange) {
+            $filters[] = ["filterKey" => "followers", "op" => ">", "value" => $this->minRange];
+            $filters[] = ["filterKey" => "followers", "op" => "<", "value" => $this->maxRange];
+        }
+        // If no custom range, apply dropdown range
+        else {
+            switch ($this->followersRange) {
+                case '0-10000':
+                    $filters[] = ["filterKey" => "followers", "op" => "<", "value" => 10000];
+                    break;
+                case '10000-50000':
+                    $filters[] = ["filterKey" => "followers", "op" => ">", "value" => 10000];
+                    $filters[] = ["filterKey" => "followers", "op" => "<", "value" => 50000];
+                    break;
+                case '50000-500000':
+                    $filters[] = ["filterKey" => "followers", "op" => ">", "value" => 50000];
+                    $filters[] = ["filterKey" => "followers", "op" => "<", "value" => 500000];
+                    break;
+                case '500000-1000000':
+                    $filters[] = ["filterKey" => "followers", "op" => ">", "value" => 500000];
+                    $filters[] = ["filterKey" => "followers", "op" => "<", "value" => 1000000];
+                    break;
+                case '1000000+':
+                    $filters[] = ["filterKey" => "followers", "op" => ">", "value" => 1000000];
+                    break;
+                default:
+                    $filters[] = ["filterKey" => "followers", "op" => ">", "value" => 10000];
+                    $filters[] = ["filterKey" => "followers", "op" => "<", "value" => 50000];
+                    break;
+            }
+        }
+
+        // Output the filters for debugging
+        return $filters;
+    }
+
 
     public function render()
     {

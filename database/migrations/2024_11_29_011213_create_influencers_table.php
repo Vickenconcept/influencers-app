@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('influnencer_id');
             $table->string('platform');
             $table->longText('content');
-            // $table->string('email')->unique();
+            $table->json('emails')->nullable();
+            $table->json('phone_numbers')->nullable();
             // $table->string('platform');
             // $table->string('profile_url');
             // $table->integer('followers_count');

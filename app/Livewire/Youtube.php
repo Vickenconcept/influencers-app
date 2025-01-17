@@ -13,18 +13,30 @@ class Youtube extends Component
     public $details = [];
     public
         $platform = 'youtube',
-        $followersCount;
+        $category = null,
+        $categoryBusiness = null,
+        $isVerified = null,
+        $isBusinessAccount = null,
+        $isPrivateAccount = null,
+        $followers = 10000,
+        $engageRate = null,
+        $country = null,
+        $lang = null;
 
     public $selectedGroups = [], $selectInfluencer;
-
-
     public $groups, $name, $description;
+
+    public $subscribersRange = '',
+        $minRange,
+        $maxRange;
+
 
     public function mount()
     {
-        $this->followersCount = 1000;
-        $this->details =  Cache::get("youtube_details_1000") ?? [];
+        $this->followers = 1000;
+        $this->details =  Cache::get("{$this->platform}_details") ?? [];
 
+        // dd($this->details);
         $this->groups = InfluncersGroup::latest()->get();
     }
 
@@ -38,17 +50,27 @@ class Youtube extends Component
 
         $service = new InfluencerService($youtubeConfig);
         // Fetch details for youtube influencers
-        $this->followersCount = 4000;
+        $this->followers = 4000;
 
-        $this->details = $service->fetchPlatformInfluencerDetails($this->platform, $this->followersCount);
+        $this->details = $service->fetchPlatformInfluencerDetails(
+            $this->platform,
+            $this->category,
+            $this->categoryBusiness,
+            $this->isVerified,
+            $this->isBusinessAccount,
+            $this->isPrivateAccount,
+            $this->followers = $this->getFiltersByRange(),
+            $this->engageRate,
+            $this->country,
+            $this->lang,
+
+        );
+        // $this->details = $service->fetchPlatformInfluencerDetails($this->platform, $this->followers);
+        // dd($this->details);
         return $this->details;
     }
 
 
-    public function loadMore()
-    {
-        $this->details = Cache::get("{$this->platform}_details_{$this->followersCount}") ?? [];
-    }
 
 
     public function creatGroup()
@@ -60,7 +82,7 @@ class Youtube extends Component
 
         $user = auth()->user();
         $user->influncersGroups()->create($validateData);
-        
+
         $this->groups = InfluncersGroup::latest()->get();
         $this->name = '';
         $this->description = '';
@@ -88,6 +110,50 @@ class Youtube extends Component
             ]);
         }
     }
+
+
+
+    public function getFiltersByRange()
+    {
+        $filters = [];
+
+        // Apply custom range if both min and max are provided
+        if ($this->minRange && $this->maxRange) {
+            $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => $this->minRange];
+            $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => $this->maxRange];
+        }
+        // If no custom range, apply dropdown range
+        else {
+            switch ($this->subscribersRange) {
+                case '0-10000':
+                    $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => 10000];
+                    break;
+                case '10000-50000':
+                    $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => 10000];
+                    $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => 50000];
+                    break;
+                case '50000-500000':
+                    $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => 50000];
+                    $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => 500000];
+                    break;
+                case '500000-1000000':
+                    $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => 500000];
+                    $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => 1000000];
+                    break;
+                case '1000000+':
+                    $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => 1000000];
+                    break;
+                default:
+                    $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => 10000];
+                    $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => 50000];
+                    break;
+            }
+        }
+
+        // Output the filters for debugging
+        return $filters;
+    }
+
 
     public function render()
     {

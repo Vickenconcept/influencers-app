@@ -128,7 +128,7 @@
     </div>
     @if (count($details) > 0)
         <div class="py-20 mb-10 col-span-3 flex justify-center">
-            <button wire:click="loadMore()">Load More</button>
+            <button wire:click="getInfluencer()">Load More</button>
         </div>
     @endif
 

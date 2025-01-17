@@ -69,65 +69,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('inquiries/{campaignId}/{influencerId}', [CampaignInquiryController::class, 'sendInquiry']);
 });
 
-// Route::get('try', function () 
-// {
 
-//     dd( Cache::get('facebook_influencer_details'));
-//     $client = new Client();
 
-//     // Step 1: Search for influencers
-//     $response = $client->request('POST', 'https://dev.creatordb.app/v2/facebookAdvancedSearch', [
-//         'body' => json_encode([
-//             "maxResults" => 50,
-//             "sortBy" => "followers",
-//             "offset" => 0,
-//             "desc" => true,
-//             "filters" => [
-//                 [
-//                     "filterKey" => "followers",
-//                     "op" => ">",
-//                     "value" => 10000,
-//                 ]
-//             ],
-//         ]),
-//         'headers' => [
-//             'Accept' => 'application/json',
-//             'Content-Type' => 'application/json',
-//             'apiId' => 'b3e3a97d2e6f09e2-F1vuybqkFX8mLk3wBbNR', // Replace with your valid API ID
-//         ],
-//     ]);
-
-//     $searchResults = json_decode($response->getBody(), true);
-//     $facebookIds = $searchResults['data'] ?? []; // Extract Facebook IDs
-
-//     // Step 2: Fetch details for each Facebook ID
-//     $details = [];
-//     foreach ($facebookIds as $facebookId) {
-//         try {
-//             $detailResponse = $client->request('GET', 'https://dev.creatordb.app/v2/facebookBasic', [
-//                 'headers' => [
-//                     'Accept' => 'application/json',
-//                     'apiId' => 'b3e3a97d2e6f09e2-F1vuybqkFX8mLk3wBbNR', // Replace with your valid API ID
-//                 ],
-//                 'query' => [
-//                     'facebookId' => $facebookId,
-//                 ],
-//             ]);
-
-//             $data = json_decode($detailResponse->getBody(), true);
-//             $details[] = $data; // Add the response to the details array
-
-//         } catch (\Exception $e) {
-//             // Log the error or handle it as needed
-//             error_log("Error fetching details for ID $facebookId: " . $e->getMessage());
-//         }
-//     }
-
-//     Cache::put('facebook_influencer_details', $details, now()->addDays(30));
-
-//     // Debug or return the results
-//     echo json_encode($details, JSON_PRETTY_PRINT);
-// });
 
 Route::get('test', function () {
 
@@ -136,7 +79,7 @@ Route::get('test', function () {
     $response = $client->request('GET', 'https://dev.creatordb.app/v2/instagramBasic?instagramId=goodalicia', [
         'headers' => [
             'Accept' => 'application/json',
-            'apiId' => 'LE6DPZQkR3TQShxofXoD2j8qCBu1-f0jti665m1t50dwDD12W',
+            'apiId' => 'b3e3a97d2e6f09e2-nSso42D8yDMHR2aP3NgM',
         ],
     ]);
 
@@ -163,30 +106,7 @@ Route::get('test', function () {
 
     dd($cachedData);
 });
-Route::get('try', function (FacebookInfluencerService $service) {
 
-    //  dd(Cache::get('facebook_details_2000'));
-    // $facebookConfig = [
-    //     'apiId' => 'b3e3a97d2e6f09e2-F1vuybqkFX8mLk3wBbNR',
-    //     'searchEndpoint' => 'https://dev.creatordb.app/v2/facebookAdvancedSearch',
-    //     'detailsEndpoint' => 'https://dev.creatordb.app/v2/facebookBasic',
-    // ];
-    $tiktokConfig = [
-        'apiId' => 'b3e3a97d2e6f09e2-F1vuybqkFX8mLk3wBbNR',
-        'searchEndpoint' => 'https://dev.creatordb.app/v2/tiktokAdvancedSearch',
-        'detailsEndpoint' => 'https://dev.creatordb.app/v2/tiktokBasic',
-    ];
-
-    $service = new InfluencerService($tiktokConfig);
-
-    // Fetch details for Facebook influencers
-    $platform = 'tiktok';
-    $followersCount = 3000;
-
-    $details = $service->fetchPlatformInfluencerDetails($platform, $followersCount);
-    // dd($details);
-
-});
 
 Route::get('/proxy-image', function () {
     $imageUrl = request('url');

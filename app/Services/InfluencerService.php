@@ -18,18 +18,6 @@ class InfluencerService
         $this->config = $config;
     }
 
-    // $filters = $this->filtersOption(
-    //     '>', // Operator
-    //     null, // category
-    //     'E-commerce', // categoryBusiness
-    //     true, // isVerified
-    //     true, // isBusinessAccount
-    //     false, // isPrivateAccount
-    //     10000, // followers
-    //     5, // engageRate
-    //     'United States' // country
-    // );
-    // public function searchInfluencers($maxResults = 20,  $followers = 1000)
     public function searchInfluencers(
         $category = null,
         $categoryBusiness = null,
@@ -40,6 +28,7 @@ class InfluencerService
         $engageRate = null,
         $country = null,
         $lang = null,
+        $platform = null,
     ) {
 
         $filters = $this->filtersOption(
@@ -56,10 +45,12 @@ class InfluencerService
 
 
         $maxResults = 20;
+        $sortBy = $platform == 'youtube' ? 'subscribers' : 'followers';
         $response = $this->client->request('POST', $this->config['searchEndpoint'], [
             'body' => json_encode([
                 "maxResults" => min($maxResults, 20),
-                "sortBy" => "followers",
+                "sortBy" => $sortBy,
+                // "sortBy" => "followers",
                 "offset" => 0,
                 "desc" => true,
                 "filters" => $filters,
@@ -67,9 +58,10 @@ class InfluencerService
                 //     [
                 //         "filterKey" => "followers",
                 //         "op" => ">",
-                //         "value" => $followers,
+                //         "value" => 1000,
                 //     ]
                 // ],
+
             ]),
             'headers' => [
                 'Accept' => 'application/json',
@@ -79,6 +71,8 @@ class InfluencerService
         ]);
 
         $searchResults = json_decode($response->getBody(), true);
+
+        // dd($searchResults['data']);
         return $searchResults['data'] ?? [];
     }
 
@@ -102,6 +96,7 @@ class InfluencerService
             return Cache::get($cacheKey);
         }
 
+
         // Step 1: Search for influencers and get their IDs
         $influencers = $this->searchInfluencers(
             $category,
@@ -113,16 +108,16 @@ class InfluencerService
             $engageRate,
             $country,
             $lang,
+            $platform,
         );
-        $platformIds = $influencers;
-        // $platformIds = array_column($influencers, 'id');
 
+        $platformIds = $influencers;
         if (empty($platformIds)) {
             return [];
         }
 
-        // Step 2: Fetch the first 10 details synchronously
-        $firstBatch = array_splice($platformIds, 0, 10);
+        // Step 2: Fetch the first 5 details synchronously
+        $firstBatch = array_splice($platformIds, 0, 5);
         $firstDetails = [];
         foreach ($firstBatch as $platformId) {
             try {
@@ -174,19 +169,44 @@ class InfluencerService
             $platformKey =  'basic' . ucfirst($platform);
         }
 
+        // foreach (['avatar', 'cover'] as $key) {
+        //     if (isset($responseData['data'][$platformKey][$key])) {
+        //         $imageUrl = $responseData['data'][$platformKey][$key];
+
+        //         $imageData = file_get_contents($imageUrl);
+
+        //         if ($imageData !== false) {
+        //             $base64Image = base64_encode($imageData);
+
+        //             $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
+        //         }
+        //     }
+        // }
+
         foreach (['avatar', 'cover'] as $key) {
             if (isset($responseData['data'][$platformKey][$key])) {
                 $imageUrl = $responseData['data'][$platformKey][$key];
 
-                $imageData = file_get_contents($imageUrl);
+                if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                    try {
+                        $imageData = file_get_contents($imageUrl);
 
-                if ($imageData !== false) {
-                    $base64Image = base64_encode($imageData);
+                        if ($imageData !== false) {
+                            $base64Image = base64_encode($imageData);
 
-                    $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
+                            $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
+                        } else {
+                            Log::warning("Failed to fetch image data for {$key} from {$imageUrl}");
+                        }
+                    } catch (\Exception $e) {
+                        Log::error("Error fetching image for {$key}: {$e->getMessage()} from {$imageUrl}");
+                    }
+                } else {
+                    Log::warning("Invalid or empty URL for {$key}: {$imageUrl}");
                 }
             }
         }
+
 
         return  $responseData;
     }

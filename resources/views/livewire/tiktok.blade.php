@@ -1,6 +1,77 @@
 <div class="h-full overflow-y-auto" x-data="{ tiktok_influencer_dettail: null, modalIsOpen: false }">
     {{-- Stop trying to control. --}}
     <button wire:click="getInfluencer()">click me</button>
+    <div>
+
+        <div>
+            <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"> isVerified <br>
+        </div>
+        <!-- Dropdown select for predefined ranges -->
+        <select wire:model.live="country">
+            <option value="USA">United States</option>
+            <option value="Canada">Canada</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Argentina">Argentina</option>
+            <option value="UK">United Kingdom</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Italy">Italy</option>
+            <option value="Spain">Spain</option>
+            <option value="China">China</option>
+            <option value="Japan">Japan</option>
+            <option value="India">India</option>
+            <option value="Australia">Australia</option>
+            <option value="South_Africa">South Africa</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Russia">Russia</option>
+            <option value="South_Korea">South Korea</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Vietnam">Vietnam</option>
+        </select>
+        
+        
+        {{-- <select wire:model.live="lang">
+            <option value="english">English</option>
+            <option value="spanish">Spanish</option>
+            <option value="french">French</option>
+            <option value="german">German</option>
+            <option value="italian">Italian</option>
+            <option value="portuguese">Portuguese</option>
+            <option value="chinese">Chinese (Mandarin)</option>
+            <option value="japanese">Japanese</option>
+            <option value="korean">Korean</option>
+            <option value="hindi">Hindi</option>
+            <option value="arabic">Arabic</option>
+            <option value="russian">Russian</option>
+            <option value="bengali">Bengali</option>
+            <option value="urdu">Urdu</option>
+            <option value="turkish">Turkish</option>
+            <option value="swahili">Swahili</option>
+            <option value="thai">Thai</option>
+            <option value="vietnamese">Vietnamese</option>
+        </select> --}}
+        
+        <select wire:model="followersRange" wire:change="getFiltersByRange()">
+            <option value="0-10000">Less than 10k</option>
+            <option value="10000-50000">10k - 50k</option>
+            <option value="50000-500000">50k - 500k</option>
+            <option value="500000-1000000">500k - 1M</option>
+            <option value="1000000+">1M+</option>
+        </select>
+    
+        <!-- Custom Range inputs (Min and Max) -->
+        <div>
+            <label for="minRange">Min Followers: </label>
+            <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers" min="0">
+    
+            <label for="maxRange">Max Followers: </label>
+            <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers" min="0">
+        </div>
+    
+      
+    </div>
 
 
     <div class="my-6">
@@ -150,7 +221,7 @@
     </div>
     @if (count($details) > 0)
         <div class="py-20 mb-10 col-span-3 flex justify-center">
-            <button wire:click="loadMore()">Load More</button>
+            <button wire:click="getInfluencer()">Load More</button>
         </div>
     @endif
 

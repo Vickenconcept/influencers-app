@@ -2,6 +2,28 @@
     {{-- Stop trying to control. --}}
     <button wire:click="getInfluencer()">click me</button>
 
+    <div>
+        <!-- Dropdown select for predefined ranges -->
+        <select wire:model="followersRange" wire:change="getFiltersByRange()">
+            <option value="0-10000">Less than 10k</option>
+            <option value="10000-50000">10k - 50k</option>
+            <option value="50000-500000">50k - 500k</option>
+            <option value="500000-1000000">500k - 1M</option>
+            <option value="1000000+">1M+</option>
+        </select>
+    
+        <!-- Custom Range inputs (Min and Max) -->
+        <div>
+            <label for="minRange">Min Followers: </label>
+            <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers" min="0">
+    
+            <label for="maxRange">Max Followers: </label>
+            <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers" min="0">
+        </div>
+    
+      
+    </div>
+
     <div class="grid sm:grid-cols-3 gap-2">
         <!-- component -->
         @forelse ($details as $detail)
@@ -98,7 +120,7 @@
     </div>
     @if (count($details) > 0)
         <div class="py-20 mb-10 col-span-3 flex justify-center">
-            <button wire:click="loadMore()">Load More</button>
+            <button wire:click="getInfluencer()">Load More</button>
         </div>
     @endif
 

@@ -34,7 +34,7 @@ class Instagram extends Component
     public function mount()
     {
         $this->followers = 1000;
-        $this->details =  Cache::get("instagram_details_1000") ?? [];
+        $this->details =  Cache::get("{$this->platform}_details") ?? [];
 
         $this->groups = InfluncersGroup::latest()->get();
     }
@@ -58,11 +58,11 @@ class Instagram extends Component
             $this->isVerified,
             $this->isBusinessAccount,
             $this->isPrivateAccount,
-            $this->followers = $this->getFiltersByRange() ,
+            $this->followers = $this->getFiltersByRange(),
             $this->engageRate,
             $this->country,
-            $this->lang = 'english',
-            
+            $this->lang,
+
         );
         // $this->details = $service->fetchPlatformInfluencerDetails($this->platform, $this->followers);
         // dd($this->details);
@@ -70,10 +70,6 @@ class Instagram extends Component
     }
 
 
-    public function loadMore()
-    {
-        $this->details = Cache::get("{$this->platform}_details") ?? [];
-    }
 
 
     public function creatGroup()
@@ -119,7 +115,7 @@ class Instagram extends Component
     public function getFiltersByRange()
     {
         $filters = [];
-        
+
         // Apply custom range if both min and max are provided
         if ($this->minRange && $this->maxRange) {
             $filters[] = ["filterKey" => "followers", "op" => ">", "value" => $this->minRange];
@@ -147,14 +143,16 @@ class Instagram extends Component
                     $filters[] = ["filterKey" => "followers", "op" => ">", "value" => 1000000];
                     break;
                 default:
+                    $filters[] = ["filterKey" => "followers", "op" => ">", "value" => 10000];
+                    $filters[] = ["filterKey" => "followers", "op" => "<", "value" => 50000];
                     break;
             }
         }
-    
+
         // Output the filters for debugging
         return $filters;
     }
-    
+
 
     public function render()
     {

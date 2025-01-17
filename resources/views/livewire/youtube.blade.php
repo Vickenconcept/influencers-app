@@ -1,6 +1,53 @@
 <div class="h-full overflow-y-auto" x-data="{ youtube_influencer_dettail: null, modalIsOpen: false }">
     {{-- Stop trying to control. --}}
     <button wire:click="getInfluencer()">click me</button>
+    <div>
+
+        <select wire:model.live="country">
+            <option value="USA">United States</option>
+            <option value="Canada">Canada</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Argentina">Argentina</option>
+            <option value="UK">United Kingdom</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Italy">Italy</option>
+            <option value="Spain">Spain</option>
+            <option value="China">China</option>
+            <option value="Japan">Japan</option>
+            <option value="India">India</option>
+            <option value="Australia">Australia</option>
+            <option value="South_Africa">South Africa</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Russia">Russia</option>
+            <option value="South_Korea">South Korea</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Vietnam">Vietnam</option>
+        </select>
+        <!-- Dropdown select for predefined ranges -->
+        <select wire:model="subscribersRange" wire:change="getFiltersByRange()">
+            <option value="0-10000">Less than 10k</option>
+            <option value="10000-50000">10k - 50k</option>
+            <option value="50000-500000">50k - 500k</option>
+            <option value="500000-1000000">500k - 1M</option>
+            <option value="1000000+">1M+</option>
+        </select>
+    
+        <!-- Custom Range inputs (Min and Max) -->
+        <div>
+            <label for="minRange">Min subscriber: </label>
+            <input type="number" id="minRange" wire:model="minRange" placeholder="Min subscriber" min="0">
+    
+            <label for="maxRange">Max subscriber: </label>
+            <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max subscriber" min="0">
+        </div>
+    
+      
+    </div>
+
+
 
     <div class="grid sm:grid-cols-3 gap-2">
         <!-- component -->
@@ -25,7 +72,7 @@
                 </ul>
                 <!-- Banner Profile -->
                 <div class="relative">
-                    <img src="{{ $detail['data']['basicYoutube']['cover'] }}" alt="Banner Profile"
+                    <img src="{{ $detail['data']['basicYoutube']['avatar'] }}" alt="Banner Profile"
                         class="w-full rounded-t-lg h-32">
                     <img src="{{ $detail['data']['basicYoutube']['avatar'] }}" alt="Profile Picture"
                         class="absolute bottom-0 left-2/4 transform -translate-x-1/2 translate-y-1/2 w-24 h-24 rounded-full border-4 border-white">
@@ -57,7 +104,7 @@
                     {{ flatten_array($detail['data']['basicYoutube']['hashtags'], ' | ', 3) }} </p>
                 <!-- Social Links -->
                 <div class="flex items-center mt-4 space-x-4">
-                    <a href="https://youtube.com/{{ $detail['data']['basicYoutube']['youtubeId'] }}" target="_blank"
+                    <a href="https://youtube.com/{{ $detail['data']['basicYoutube']['displayId'] }}" target="_blank"
                         class="text-blue-500 hover:underline">
                         Youtube
                         <i class="bx bx-link-external text-md"></i>
@@ -69,18 +116,18 @@
                 <div class="flex justify-between text-gray-600 mx-2">
                     <div class="text-center">
                         <span
-                            class="block font-bold text-lg">{{ format_number($detail['data']['basicYoutube']['followers']) }}</span>
-                        <span class="text-xs">Followers</span>
+                            class="block font-bold text-lg">{{ format_number($detail['data']['basicYoutube']['subscribers']) }}</span>
+                        <span class="text-xs">Subscribers</span>
                     </div>
-                    <div class="text-center">
+                    {{-- <div class="text-center">
                         <span
                             class="block font-bold text-lg">{{ format_number($detail['data']['basicYoutube']['following']) }}</span>
                         <span class="text-xs">Following</span>
-                    </div>
+                    </div> --}}
                     <div class="text-center">
                         <span
-                            class="block font-bold text-lg">{{ format_number($detail['data']['basicYoutube']['posts']) }}</span>
-                        <span class="text-xs">Posts</span>
+                            class="block font-bold text-lg">{{ format_number($detail['data']['basicYoutube']['views']) }}</span>
+                        <span class="text-xs">Views</span>
                     </div>
                 </div>
             </div>
@@ -91,7 +138,7 @@
     </div>
     @if (count($details) > 0)
         <div class="py-20 mb-10 col-span-3 flex justify-center">
-            <button wire:click="loadMore()">Load More</button>
+            <button wire:click="getInfluencer()">Load More</button>
         </div>
     @endif
 
