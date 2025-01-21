@@ -1,117 +1,85 @@
 <div class="h-full overflow-y-auto" x-data="{ tiktok_influencer_dettail: null, modalIsOpen: false }">
     {{-- Stop trying to control. --}}
-    <button wire:click="getInfluencer()">click me</button>
-    <div>
-
-        <div>
-            <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"> isVerified <br>
-        </div>
-        <!-- Dropdown select for predefined ranges -->
-        <select wire:model.live="country">
-            <option value="USA">United States</option>
-            <option value="Canada">Canada</option>
-            <option value="Mexico">Mexico</option>
-            <option value="Brazil">Brazil</option>
-            <option value="Argentina">Argentina</option>
-            <option value="UK">United Kingdom</option>
-            <option value="France">France</option>
-            <option value="Germany">Germany</option>
-            <option value="Italy">Italy</option>
-            <option value="Spain">Spain</option>
-            <option value="China">China</option>
-            <option value="Japan">Japan</option>
-            <option value="India">India</option>
-            <option value="Australia">Australia</option>
-            <option value="South_Africa">South Africa</option>
-            <option value="Nigeria">Nigeria</option>
-            <option value="Egypt">Egypt</option>
-            <option value="Russia">Russia</option>
-            <option value="South_Korea">South Korea</option>
-            <option value="Thailand">Thailand</option>
-            <option value="Vietnam">Vietnam</option>
-        </select>
-        
-        
-        {{-- <select wire:model.live="lang">
-            <option value="english">English</option>
-            <option value="spanish">Spanish</option>
-            <option value="french">French</option>
-            <option value="german">German</option>
-            <option value="italian">Italian</option>
-            <option value="portuguese">Portuguese</option>
-            <option value="chinese">Chinese (Mandarin)</option>
-            <option value="japanese">Japanese</option>
-            <option value="korean">Korean</option>
-            <option value="hindi">Hindi</option>
-            <option value="arabic">Arabic</option>
-            <option value="russian">Russian</option>
-            <option value="bengali">Bengali</option>
-            <option value="urdu">Urdu</option>
-            <option value="turkish">Turkish</option>
-            <option value="swahili">Swahili</option>
-            <option value="thai">Thai</option>
-            <option value="vietnamese">Vietnamese</option>
-        </select> --}}
-        
-        <select wire:model="followersRange" wire:change="getFiltersByRange()">
-            <option value="0-10000">Less than 10k</option>
-            <option value="10000-50000">10k - 50k</option>
-            <option value="50000-500000">50k - 500k</option>
-            <option value="500000-1000000">500k - 1M</option>
-            <option value="1000000+">1M+</option>
-        </select>
-    
-        <!-- Custom Range inputs (Min and Max) -->
-        <div>
-            <label for="minRange">Min Followers: </label>
-            <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers" min="0">
-    
-            <label for="maxRange">Max Followers: </label>
-            <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers" min="0">
-        </div>
-    
-      
-    </div>
-
 
     <div class="my-6">
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
-          <h2 class="text-stone-700 text-xl font-bold">Apply filters</h2>
-          <p class="mt-1 text-sm">Use filters to further refine search</p>
-          <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <div class="flex flex-col">
-              <label for="name" class="text-stone-600 text-sm font-medium">Name</label>
-              <input type="text" id="name" placeholder="raspberry juice" class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+            <h2 class="text-stone-700 text-xl font-bold">Apply filters</h2>
+            <p class="mt-1 text-sm">Use filters to further refine search</p>
+            <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div class="flex flex-col">
+                    <label for="name" class="text-stone-600 text-sm font-medium">Name</label>
+                    <!-- Dropdown select for predefined ranges -->
+                    <select wire:model="followersRange" wire:change="getFiltersByRange()"
+                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <option value="0-10000">Less than 10k</option>
+                        <option value="10000-50000">10k - 50k</option>
+                        <option value="50000-500000">50k - 500k</option>
+                        <option value="500000-1000000">500k - 1M</option>
+                        <option value="1000000+">1M+</option>
+                    </select>
+                </div>
+
+
+                <div class="flex flex-col">
+                    <label for="minRange" class="text-stone-600 text-sm font-medium">Min Followers:</label>
+
+                    <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers"
+                        min="0"
+                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="maxRange" class="text-stone-600 text-sm font-medium">Max Followers:</label>
+                    <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers"
+                        min="0"
+                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                </div>
+                <div class="flex flex-col">
+                    <label for="name" class="text-stone-600 text-sm font-medium">Country</label>
+                    <select wire:model.live="country"
+                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <option value="USA">United States</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="France">France</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Spain">Spain</option>
+                        <option value="China">China</option>
+                        <option value="Japan">Japan</option>
+                        <option value="India">India</option>
+                        <option value="Australia">Australia</option>
+                        <option value="South_Africa">South Africa</option>
+                        <option value="Nigeria">Nigeria</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="Russia">Russia</option>
+                        <option value="South_Korea">South Korea</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Vietnam">Vietnam</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="isVerified" class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
+                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 "> <span class="font-bold">isVerified</span>
+                    </label>
+                </div>
             </div>
-      
-            <div class="flex flex-col">
-              <label for="manufacturer" class="text-stone-600 text-sm font-medium">Manufacturer</label>
-              <input type="manufacturer" id="manufacturer" placeholder="cadbery" class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+
+            <div class="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">
+                <button wire:click="resetData()"
+                    class="active:scale-95 rounded-lg bg-gray-200 px-8 py-2 font-medium text-gray-600 outline-none focus:ring hover:opacity-90">Reset</button>
+                <button wire:click="getInfluencer()"
+                    class="active:scale-95 rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none focus:ring hover:opacity-90">Search</button>
             </div>
-      
-            <div class="flex flex-col">
-              <label for="date" class="text-stone-600 text-sm font-medium">Date of Entry</label>
-              <input type="date" id="date" class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
-            </div>
-      
-            <div class="flex flex-col">
-              <label for="status" class="text-stone-600 text-sm font-medium">Status</label>
-      
-              <select id="status" class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                <option>Dispached Out</option>
-                <option>In Warehouse</option>
-                <option>Being Brought In</option>
-              </select>
-            </div>
-          </div>
-      
-          <div class="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">
-            <button class="active:scale-95 rounded-lg bg-gray-200 px-8 py-2 font-medium text-gray-600 outline-none focus:ring hover:opacity-90">Reset</button>
-            <button class="active:scale-95 rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none focus:ring hover:opacity-90">Search</button>
-          </div>
         </div>
-      </div>
-      
+    </div>
+
+
+
     <div class="grid sm:grid-cols-3 gap-2">
         <!-- component -->
         @forelse ($details as $detail)
@@ -137,13 +105,16 @@
                 <!-- Banner Profile -->
                 <div class="relative">
                     <img src="{{ $detail['data']['basicTikTok']['avatar'] }}" alt="Banner Profile"
-                        class="w-full rounded-t-lg h-32" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1735490246994-ea609f82f249?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8';">
+                        class="w-full rounded-t-lg h-32"
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1735490246994-ea609f82f249?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8';">
                     <img src="{{ $detail['data']['basicTikTok']['avatar'] }}" alt="Profile Picture"
-                        class="absolute bottom-0 left-2/4 transform -translate-x-1/2 translate-y-1/2 w-24 h-24 rounded-full border-4 border-white" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1735490246994-ea609f82f249?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8';">
+                        class="absolute bottom-0 left-2/4 transform -translate-x-1/2 translate-y-1/2 w-24 h-24 rounded-full border-4 border-white"
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1735490246994-ea609f82f249?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8';">
                 </div>
                 <!-- User Info with Verified Button -->
                 <div class="flex items-center mt-4">
-                    <h2 class="text-xl font-bold text-gray-800 capitalize">{{ $detail['data']['basicTikTok']['tiktokName'] }}
+                    <h2 class="text-xl font-bold text-gray-800 capitalize">
+                        {{ $detail['data']['basicTikTok']['tiktokName'] }}
                     </h2>
                     @if ($detail['data']['basicTikTok']['isVerified'])
                         <button class=" px-2 py-1 rounded-full">
@@ -182,8 +153,8 @@
                     {{ flatten_array($detail['data']['basicTikTok']['hashtags'], ' | ', 3) }} </p>
                 <!-- Social Links -->
                 <div class="flex items-center mt-4 space-x-4">
-                    <a href="https://tiktok.com/{{ '@'. $detail['data']['basicTikTok']['tiktokId'] }}" target="_blank"
-                        class="text-blue-500 hover:underline">
+                    <a href="https://tiktok.com/{{ '@' . $detail['data']['basicTikTok']['tiktokId'] }}"
+                        target="_blank" class="text-blue-500 hover:underline">
                         Tiktok
                         <i class="bx bx-link-external text-md"></i>
                     </a>
@@ -221,7 +192,7 @@
     </div>
     @if (count($details) > 0)
         <div class="py-20 mb-10 col-span-3 flex justify-center">
-            <button wire:click="getInfluencer()">Load More</button>
+            <button wire:click="$dispatch('refreshPage')">Load More</button>
         </div>
     @endif
 
@@ -248,8 +219,8 @@
                     <span x-text="tiktok_influencer_dettail?.tiktokId"></span>
                 </h3>
                 <button @click="modalIsOpen = false" aria-label="close modal">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor"
-                        fill="none" stroke-width="1.4" class="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                        stroke="currentColor" fill="none" stroke-width="1.4" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>

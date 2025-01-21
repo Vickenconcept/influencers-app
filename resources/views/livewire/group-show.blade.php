@@ -46,8 +46,8 @@
                                         <div class="text-gray-800 mt-2">
                                             @if (json_decode($influencer->emails, true) != null)
                                                 @if (count(json_decode($influencer->emails, true)) > 0)
-                                                    <select class="rounded-lg border-0 py-1 w-24 text-sm font-semibold">
-                                                        <option value="" selected disabled>Emails</option>
+                                                    <select class="rounded-lg border-0 py-1 w-24 text-sm font-semibold" >
+                                                        <option value="" selected disabled >Emails</option>
                                                         @foreach (json_decode($influencer->emails, true) ?? [] as $email)
                                                             <option value="{{ $email }}">{{ $email }}
                                                             </option>
@@ -99,7 +99,7 @@
                                 @endisset
                             </td>
                             <td class="p-3 ">
-                                <button @click="openModal = true"
+                                <button @click="openModal = true" wire:key="influencer-{{ $influencer->id }}"
                                     wire:click="setInfluencer('{{ $influencer->id }}', '{{ isset($influencer->emails) ? $influencer->emails : '' }}')">Send
                                     Campaign </button>
                             </td>
@@ -109,6 +109,11 @@
                 </tbody>
             </table>
         </div>
+        <div class="my-8">
+            {{ $influencers->links() }}
+        </div>
+        
+
 
         {{-- openModal modal --}}
         <div class="fixed items-center justify-center  flex top-0 left-0 mx-auto w-full h-full bg-gray-600 bg-opacity-30 z-50 transition duration-1000 ease-in-out"
@@ -225,8 +230,8 @@
                                     <div class="mt-2">
                                         @if (json_decode($emails, true) != null)
                                             @if (count(json_decode($emails, true)) > 0)
-                                                <select class="rounded-lg border-2 border-gray-200   text-sm font-semibold bg-gray-50">
-                                                    <option value="" selected disabled>Emails</option>
+                                                <select class="rounded-lg border-2 border-gray-200   text-sm font-semibold bg-gray-50" wire:model="selectedEmail">
+                                                    <option value="null" selected >Select email</option>
                                                     @foreach (json_decode($emails, true) ?? [] as $email)
                                                         <option value="{{ $email }}">{{ $email }}
                                                         </option>
@@ -236,6 +241,7 @@
                                         @endif
                                     </div>
                                     <a href="{{ $invitationLink }}">Invitation Link</a>
+                                    <button wire:click="sendCampaignInvite()">Send mail</button>
                                    </div>
                                 </div>
                             </li>
@@ -248,14 +254,11 @@
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // window.addEventListener('refreshPage', function() {
-                //     location.reload();
-                // });
-                Livewire.on('refreshPage', () => {
-                    location.reload();
-                });
-            });
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     Livewire.on('refreshPage', () => {
+            //         location.reload();
+            //     });
+            // });
         </script>
 
     </div>

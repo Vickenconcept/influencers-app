@@ -1,4 +1,4 @@
-<div class="h-full  space-y-8 " x-data="{ createCampaign: false, editCampaign: false }">
+<div class="  space-y-8 overflow-y-auto h-screen pb-28" x-data="{ createCampaign: false, editCampaign: false }">
     <div class="py-5 border-b px-3 md:px-10 flex flex-col md:flex-row justify-between items-center ">
         <div>
             <h3 class=" font-medium text-2xl">Campaigns</h3>

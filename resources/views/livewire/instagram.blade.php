@@ -1,9 +1,6 @@
 <div class="h-full overflow-y-auto" x-data="{ modalIsOpen: false }">
-    {{-- Stop trying to control. --}}
-    <button wire:click="getInfluencer()">click me</button>
 
-
-    <div>
+    {{-- <div>
         <!-- Dropdown select for predefined ranges -->
         <select wire:model="followersRange" wire:change="getFiltersByRange()">
             <option value="0-10000">Less than 10k</option>
@@ -23,10 +20,53 @@
         </div>
     
       
+    </div> --}}
+
+    <div class="my-6">
+        <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
+            <h2 class="text-stone-700 text-xl font-bold">Apply filters</h2>
+            <p class="mt-1 text-sm">Use filters to further refine search</p>
+            <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div class="flex flex-col">
+                    <label for="name" class="text-stone-600 text-sm font-medium">Name</label>
+                    <!-- Dropdown select for predefined ranges -->
+                    <select wire:model="followersRange" wire:change="getFiltersByRange()"
+                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <option value="0-10000">Less than 10k</option>
+                        <option value="10000-50000">10k - 50k</option>
+                        <option value="50000-500000">50k - 500k</option>
+                        <option value="500000-1000000">500k - 1M</option>
+                        <option value="1000000+">1M+</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="minRange" class="text-stone-600 text-sm font-medium">Min Followers:</label>
+
+                    <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers"
+                        min="0"
+                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="maxRange" class="text-stone-600 text-sm font-medium">Max Followers:</label>
+                    <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers"
+                        min="0"
+                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                </div>
+
+            </div>
+
+            <div class="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">
+                <button wire:click="resetData()"
+                    class="active:scale-95 rounded-lg bg-gray-200 px-8 py-2 font-medium text-gray-600 outline-none focus:ring hover:opacity-90">Reset</button>
+                <button wire:click="getInfluencer()"
+                    class="active:scale-95 rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none focus:ring hover:opacity-90">Search</button>
+            </div>
+        </div>
     </div>
     
     <div class="grid sm:grid-cols-3 gap-2">
-
 
         <!-- component -->
         @forelse ($details as $detail)
@@ -128,7 +168,7 @@
     </div>
     @if (count($details) > 0)
         <div class="py-20 mb-10 col-span-3 flex justify-center">
-            <button wire:click="getInfluencer()">Load More</button>
+            <button wire:click="$dispatch('refreshPage')">Load More</button>
         </div>
     @endif
 

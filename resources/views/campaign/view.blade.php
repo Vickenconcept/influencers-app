@@ -1,18 +1,4 @@
 <x-guest-layout>
-    {{-- <div>
-        <h1>Campaign: {{ $campaign->title }}</h1>
-        <p>{{ $campaign->description }}</p>
-        <p>Budget: {{ $campaign->budget }}</p>
-
-        <form method="POST" action="{{ route('campaign.respond') }}">
-            @csrf
-            <input type="hidden" name="token" value="{{ request('token') }}">
-            <button type="submit" name="response" value="accepted">Accept</button>
-            <button type="submit" name="response" value="declined">Decline</button>
-        </form>
-
-    </div> --}}
-
     <div class="bg-[#000828] flex items-center justify-center h-screen">
         <div class="bg-yellow-300 sm:w-[80%] md:w-[60%] py-20 px-10 rounded-xl ">
             <div class="flex flex-col items-center">

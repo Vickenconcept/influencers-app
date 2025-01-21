@@ -71,6 +71,13 @@ class Youtube extends Component
     }
 
 
+    public function resetData(){
+
+        Cache::forget("{$this->platform}_details");
+        $this->dispatch('refreshPage');
+        return ;
+    }
+
 
 
     public function creatGroup()
@@ -119,8 +126,8 @@ class Youtube extends Component
 
         // Apply custom range if both min and max are provided
         if ($this->minRange && $this->maxRange) {
-            $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => $this->minRange];
-            $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => $this->maxRange];
+            $filters[] = ["filterKey" => "subscribers", "op" => ">", "value" => (int)$this->minRange];
+            $filters[] = ["filterKey" => "subscribers", "op" => "<", "value" => (int)$this->maxRange];
         }
         // If no custom range, apply dropdown range
         else {

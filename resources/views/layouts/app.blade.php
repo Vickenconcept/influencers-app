@@ -45,10 +45,10 @@
 
 
 
-        
 
-       <x-navbar />
-       <x-sidebar />
+
+        <x-navbar />
+        <x-sidebar />
 
         <div class="h-full p-4 sm:ml-64 bg-gray-100 pt-20 overflow-y-hidden">
             {{ $slot }}
@@ -67,6 +67,14 @@
     </script>
 
     @livewireScripts
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Livewire.on('refreshPage', () => {
+                location.reload();
+            });
+        });
+    </script>
 
 </body>
 

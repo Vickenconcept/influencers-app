@@ -1,4 +1,4 @@
-<div>
+<div class="overflow-y-auto h-screen pb-28">
     <div >
         <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:justify-between my-10">
 
