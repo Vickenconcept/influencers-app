@@ -104,7 +104,8 @@
             have any questions or need more details, don’t hesitate to reach out to us.</p>
 
         <p style="font-size: 16px; font-family: sans-serif;">Best regards,<br>
-            <strong>[Your App Name] Team</strong>
+            <strong>{{env('APP_NAME')}} Team</strong>
+            {{-- <strong>[Your App Name] Team</strong> --}}
         </p>
     </section>
 </body>

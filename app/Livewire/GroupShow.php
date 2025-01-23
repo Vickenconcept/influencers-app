@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Mail\InfluencerCampaignInvite;
+use App\Mail\InfluencerCustomInvite;
 use App\Models\Campaign;
 use App\Models\Influencer;
 use App\Models\InfluncersGroup;
@@ -19,12 +20,14 @@ class GroupShow extends Component
 
     public
         $group,
-        $emails, $campaign;
+        $emails, $campaign, $customEmailBody;
 
-    public $selectedInfluencer, $selectedEmail;
+    public $selectedInfluencer, $selectedEmail, $influencerName;
     public $selectedCampaignUuid;
     public $invitationLink;
     public $youtubeId;
+
+    public $compensation, $campaignTitle;
 
     public function mount($group)
     {
@@ -44,8 +47,20 @@ class GroupShow extends Component
         $this->campaign = Campaign::whereUuid($this->selectedCampaignUuid)->firstOrFail();
 
         $influencer = Influencer::find($this->selectedInfluencer);
+
+        $content = json_decode($influencer->content, true);
+        $key = "{$influencer->platform}Name";
+        $this->influencerName = $content[$key];
+
+        $this->compensation = '$' . $this->campaign->budget . ' per post';
+        $this->campaignTitle = $this->campaign->title;
+
+
         $token = Crypt::encryptString("campaign_id={$this->campaign->id}&influencer_id={$influencer->id}");
         $this->invitationLink = route('campaign.view', ['token' => $token]);
+
+
+        $this->addToEditor($this->campaign->id);
     }
 
 
@@ -89,7 +104,8 @@ class GroupShow extends Component
         return;
     }
 
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->selectedEmail = $email;
     }
 
@@ -165,39 +181,96 @@ class GroupShow extends Component
 
     public function sendCampaignInvite()
     {
-        $influencerName = 'John Doe';
-        $campaignTitle = $this->campaign->title;
         $brandName = null;
         $targetAudience = null;
         // $targetAudience = 'Young Adults (18-25)';
-        $compensation = '$'.$this->campaign->budget .' per post';
         $acceptanceDeadline = $this->campaign->end_date;
-        $campaignLink = $this->invitationLink;
-        
-        if($this->selectedEmail == 'null'|| $this->selectedEmail == "" ) return;
 
-        
-        // dd($this->selectedEmail, $campaignTitle, $compensation, $acceptanceDeadline, $campaignLink, $this->campaign );
+        if ($this->selectedEmail == 'null' || $this->selectedEmail == "") return;
+
 
         Mail::to('vicken408@gmail.com')->send(new InfluencerCampaignInvite(
-            $influencerName,
-            $campaignTitle,
+            $this->influencerName,
+            $this->campaignTitle,
             $brandName,
             $targetAudience,
-            $compensation,
+            $this->compensation,
             $acceptanceDeadline,
-            $campaignLink
+            $this->invitationLink
+        ));
+
+        return;
+    }
+    public function sendCustomCampaignInvite()
+    {
+        if ($this->selectedEmail == 'null' || $this->selectedEmail == "") return;
+
+
+        // dd($this->customEmailBody);
+        Mail::to('vicken408@gmail.com')->send(new InfluencerCustomInvite(
+            $this->customEmailBody,
         ));
 
         return;
     }
 
+    public function addToEditor($id)
+    {
 
+        $this->customEmailBody = "<div class='px-3 py-5 bg-gray-100  '>
+                                            <p class='text-xl font-semibold mb-3'>Hi $this->influencerName,</p>
+                                            <p>We’re thrilled to invite you to join an exclusive campaign
+                                                that’s perfectly tailored to your unique influence and
+                                                style. Here’s a quick overview of the campaign:</p>
+                                            <ul class='py-5'>
+                                                <li>
+                                                    <strong style='margin-right: 6px;'>&#10003;</strong>
+                                                    <strong>🌟 Campaign Name:</strong> $this->campaignTitle
+                                                </li>
+                                                <li>
+                                                    <strong style='margin-right: 6px;'>&#10003;</strong>
+                                                    <strong>💰 Compensation:</strong> $this->compensation
+                                                </li>
+                                            </ul>
+
+                                            <p class='mb-4'>If you’re ready to showcase your talent and make an
+                                                impact,
+                                                simply click the link below to review and accept the
+                                                campaign details:</p>
+
+                                            <a href=" . "'" . $this->invitationLink . "'" . " style=' display: inline-block; background-color: #007BFF; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; '  >👉 Accept the Campaign Now</a>
+
+                                            <p class='my-4'>We’re excited to work with you and can’t wait to see the
+                                                amazing content you’ll create for this campaign. If you
+                                                have any questions or need more details, don’t hesitate to reach out to
+                                                us.
+                                            </p>
+
+                                            <p style='font-size: 16px; font-family: sans-serif;'>Best regards,<br>
+                                                <strong>" . env('APP_NAME') . " Team</strong>
+                                            </p>
+                                        </div>";
+
+        $this->dispatch('addToEditor',  content: $this->customEmailBody, id: $id);
+    }
+
+
+    public function submit()
+    {
+
+        $rawContent = $this->customEmailBody;
+
+        $cleanedContent = stripslashes($rawContent); 
+        $cleanedContent = str_replace(['"', '\n', '\r'], '', $cleanedContent); 
+
+        $this->customEmailBody = $cleanedContent;
+        // dd($this->customEmailBody);
+    }
     public function render()
     {
         $campaigns = Campaign::latest()->get();
         // $groups = InfluncersGroup::with('latestInfluencer')->latest()->paginate(10);
         $influencers = $this->group->influencers()->paginate(10);
-        return view('livewire.group-show', compact('influencers','campaigns'));
+        return view('livewire.group-show', compact('influencers', 'campaigns'));
     }
 }
