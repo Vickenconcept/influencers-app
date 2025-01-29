@@ -50,7 +50,7 @@
                                          </div>
                                          <input type="email"
                                              class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-[#5c6dd8]"
-                                             placeholder="johnsmith@example.com" name="email">
+                                             placeholder="johnsmith@example.com" name="email" value="{{ old('email') }}">
                                      </div>
                                  </div>
                              </div>

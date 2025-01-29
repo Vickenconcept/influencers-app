@@ -34,7 +34,7 @@ class Youtube extends Component
     public function mount()
     {
         $this->followers = 1000;
-        $this->details =  Cache::get("{$this->platform}_details") ?? [];
+        $this->details =  Cache::get("{$this->platform}_details" . auth()->id()) ?? [];
 
         // dd($this->details);
         $this->groups = InfluncersGroup::latest()->get();
@@ -73,7 +73,7 @@ class Youtube extends Component
 
     public function resetData(){
 
-        Cache::forget("{$this->platform}_details");
+        Cache::forget("{$this->platform}_details" . auth()->id());
         $this->dispatch('refreshPage');
         return ;
     }

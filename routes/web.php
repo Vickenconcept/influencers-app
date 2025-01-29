@@ -65,8 +65,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('groups', InfluncersGroupController::class);
     Route::resource('influencers', InfluencerController::class);
+    Route::post('campaign/update-name', [CampaignController::class, 'changeName'])->name('changeCampaignName');
     Route::resource('campaigns', CampaignController::class);
-    Route::post('inquiries/{campaignId}/{influencerId}', [CampaignInquiryController::class, 'sendInquiry']);
+    // Route::post('inquiries/{campaignId}/{influencerId}', [CampaignInquiryController::class, 'sendInquiry']);
 });
 
 

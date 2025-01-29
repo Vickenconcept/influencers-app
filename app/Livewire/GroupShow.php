@@ -20,14 +20,14 @@ class GroupShow extends Component
 
     public
         $group,
-        $emails, $campaign, $customEmailBody;
+        $emails, $campaign, $customEmailBody, $evaluation = [];
 
     public $selectedInfluencer, $selectedEmail, $influencerName;
     public $selectedCampaignUuid;
     public $invitationLink;
     public $youtubeId;
 
-    public $compensation, $campaignTitle;
+    public $compensation, $campaignTitle, $acceptanceDeadline;
 
     public function mount($group)
     {
@@ -53,6 +53,7 @@ class GroupShow extends Component
         $this->influencerName = $content[$key];
 
         $this->compensation = '$' . $this->campaign->budget . ' per post';
+        $this->acceptanceDeadline = $this->campaign->invite_end_date;
         $this->campaignTitle = $this->campaign->title;
 
 
@@ -184,9 +185,11 @@ class GroupShow extends Component
         $brandName = null;
         $targetAudience = null;
         // $targetAudience = 'Young Adults (18-25)';
-        $acceptanceDeadline = $this->campaign->end_date;
 
-        if ($this->selectedEmail == 'null' || $this->selectedEmail == "") return;
+        if ($this->selectedEmail == 'null' || $this->selectedEmail == "") {
+            $this->dispatch('email-sent', status: 'error', msg: 'Failed: Select email');
+            return;
+        }
 
 
         Mail::to('vicken408@gmail.com')->send(new InfluencerCampaignInvite(
@@ -195,9 +198,10 @@ class GroupShow extends Component
             $brandName,
             $targetAudience,
             $this->compensation,
-            $acceptanceDeadline,
+            $this->acceptanceDeadline,
             $this->invitationLink
         ));
+        $this->dispatch('email-sent', status: 'success',  msg: 'Email set successfully');
 
         return;
     }
@@ -231,6 +235,10 @@ class GroupShow extends Component
                                                     <strong style='margin-right: 6px;'>&#10003;</strong>
                                                     <strong>💰 Compensation:</strong> $this->compensation
                                                 </li>
+                                                <li>
+                                                    <strong style='margin-right: 6px;'>&#10003;</strong>
+                                                    <strong>🗓️ Acceptance Deadline:</strong> $this->acceptanceDeadline
+                                                </li>
                                             </ul>
 
                                             <p class='mb-4'>If you’re ready to showcase your talent and make an
@@ -255,21 +263,76 @@ class GroupShow extends Component
     }
 
 
-    public function submit()
+    public function evaluateInfluncerWithAI(ChatGptService $chatGptService, $influencer_id, $influencers_data)
     {
 
-        $rawContent = $this->customEmailBody;
+        unset($influencers_data['avatar'], $influencers_data['cover']);
 
-        $cleanedContent = stripslashes($rawContent); 
-        $cleanedContent = str_replace(['"', '\n', '\r'], '', $cleanedContent); 
+        $prompt = "Evaluate this influencer's data and extract the key metrics that a user can use to determine how well the influencer is performing. This will help the user decide whether to engage in business with the influencer.
 
-        $this->customEmailBody = $cleanedContent;
-        // dd($this->customEmailBody);
+        Return the result as an associative array with two main keys:
+        1. `evaluation`: An associative array containing key metrics (e.g., engagement ratio, follower count, etc.).
+        2. `video_or_post`: An array of associative arrays, each containing details about the influencer's posts (e.g., URL, likes, views).
+
+        Here is the influencer's data:
+        " . json_encode($influencers_data, JSON_PRETTY_PRINT) . "
+
+        Format the output like this:
+        {
+        \"evaluation\": {
+            \"engagement_ratio\": \"12%\",
+            \"follower_count\": 100000,
+            \"average_likes\": 5000,
+            \"average_views\": 20000,
+            \"audience_demographics\": {
+            \"age_range\": \"18-34\",
+            \"location\": \"United States\"
+            }
+        },
+        \"video_or_post\": [
+            {
+            \"url\": \"https://example.com/post1\",
+            \"likes\": 1000,
+            \"views\": 10000
+            },
+            {
+            \"url\": \"https://example.com/post2\",
+            \"likes\": 1500,
+            \"views\": 12000
+            }
+        ]
+        }, Don't add any additionaly sentence or phrase just the object ";
+
+
+        $response = $chatGptService->generateContent($prompt);
+        // $this->evaluation = json_decode($response, true);
+
+        $response = trim($response, "\"`json");
+
+        $cacheKey = "inflencer_{$influencer_id}_user_" . auth()->id();
+
+        Cache::put($cacheKey, json_decode($response, true), now()->addDays(30));
+        $this->evaluation =  Cache::get($cacheKey, []);
     }
+    public function getEveluatedData($influencer_id)
+    {
+
+        $cacheKey = "inflencer_{$influencer_id}_user_" . auth()->id();
+        $this->evaluation =  Cache::get($cacheKey, []);
+    }
+    // public function submit()
+    // {
+
+    //     $rawContent = $this->customEmailBody;
+
+    //     $cleanedContent = stripslashes($rawContent);
+    //     $cleanedContent = str_replace(['"', '\n', '\r'], '', $cleanedContent);
+
+    //     $this->customEmailBody = $cleanedContent;
+    // }
     public function render()
     {
         $campaigns = Campaign::latest()->get();
-        // $groups = InfluncersGroup::with('latestInfluencer')->latest()->paginate(10);
         $influencers = $this->group->influencers()->paginate(10);
         return view('livewire.group-show', compact('influencers', 'campaigns'));
     }

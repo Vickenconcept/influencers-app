@@ -14,26 +14,11 @@ class CampaignComponent extends Component
 
     public function render()
     {
-        // $campaigns = Campaign::all();
-
-        // $this->campaigns = Campaign::query();
-
-        // if ($this->search) {
-        //     $this->campaigns->where("name", 'like', '%' . $this->search . '%');
-        // }
-
-        // if ($this->sortOrder === 'latest') {
-        //     $this->campaigns->latest();
-        // } elseif ($this->sortOrder === 'oldest') {
-        //     $this->campaigns->oldest();
-        // }
-
-        // $this->campaigns = $this->campaigns->paginate(9);
 
         $campaigns = Campaign::query();
 
         if ($this->search) {
-            $campaigns->where("name", 'like', '%' . $this->search . '%');
+            $campaigns->where("title", 'like', '%' . $this->search . '%');
         }
 
         if ($this->sortOrder === 'latest') {

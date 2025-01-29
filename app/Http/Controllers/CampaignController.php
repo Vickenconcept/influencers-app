@@ -30,6 +30,7 @@ class CampaignController extends Controller
             'description' => 'required',
             'task' => 'nullable',
             'start_date' => 'nullable',
+            'invite_end_date' => 'nullable',
             'end_date' => 'nullable',
             'status' => 'actinullableve',
         ]);
@@ -132,6 +133,18 @@ class CampaignController extends Controller
         return view('campaign.share', compact('campaign', 'links'));
     }
 
+    public function changeName(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string',
+        ]);
+
+        $campaign = Campaign::where('id', $request->input('id'))->firstOrFail();
+        $campaign->title = $request->input('title');
+        $campaign->update();
+
+        return back()->with('success', 'Updated successfully');
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -153,6 +166,7 @@ class CampaignController extends Controller
      */
     public function destroy(Campaign $campaign)
     {
-        //
+        $campaign->delete();
+        return back()->with('success', 'Deleted Successfully');
     }
 }

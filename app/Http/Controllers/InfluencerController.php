@@ -46,7 +46,7 @@ class InfluencerController extends Controller
      */
     public function show(Influencer $influencer)
     {
-        //
+        return view('influencer.show', compact('influencer'));
     }
 
     /**

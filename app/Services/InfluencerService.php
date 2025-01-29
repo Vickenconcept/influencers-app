@@ -88,10 +88,8 @@ class InfluencerService
         $country,
         $lang,
     ) {
-        // Generate a dynamic cache key
-        $cacheKey = "{$platform}_details";
+        $cacheKey = "{$platform}_details" . auth()->id();
 
-        // Check if the details already exist in cache
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
@@ -127,15 +125,13 @@ class InfluencerService
             }
         }
 
-        // Cache the first batch
         Cache::put($cacheKey, $firstDetails, now()->addDays(30));
 
-        // Step 3: Dispatch a job to fetch the remaining details asynchronously
         FetchInfluencerDetailsJob::dispatch($platformIds, $cacheKey, $this->config, $platform)
             ->onQueue('influencer-details');
 
 
-        return Cache::get("{$platform}_details");
+        return Cache::get("{$platform}_details" . auth()->id());
         // return $firstDetails;
     }
 
@@ -169,16 +165,27 @@ class InfluencerService
             $platformKey =  'basic' . ucfirst($platform);
         }
 
+
         // foreach (['avatar', 'cover'] as $key) {
         //     if (isset($responseData['data'][$platformKey][$key])) {
         //         $imageUrl = $responseData['data'][$platformKey][$key];
 
-        //         $imageData = file_get_contents($imageUrl);
+        //         if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+        //             try {
+        //                 $imageData = file_get_contents($imageUrl);
 
-        //         if ($imageData !== false) {
-        //             $base64Image = base64_encode($imageData);
+        //                 if ($imageData !== false) {
+        //                     $base64Image = base64_encode($imageData);
 
-        //             $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
+        //                     $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
+        //                 } else {
+        //                     Log::warning("Failed to fetch image data for {$key} from {$imageUrl}");
+        //                 }
+        //             } catch (\Exception $e) {
+        //                 Log::error("Error fetching image for {$key}: {$e->getMessage()} from {$imageUrl}");
+        //             }
+        //         } else {
+        //             Log::warning("Invalid or empty URL for {$key}: {$imageUrl}");
         //         }
         //     }
         // }
@@ -189,23 +196,26 @@ class InfluencerService
 
                 if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
                     try {
-                        $imageData = file_get_contents($imageUrl);
+                        $imageData = @file_get_contents($imageUrl);
 
                         if ($imageData !== false) {
                             $base64Image = base64_encode($imageData);
-
                             $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
                         } else {
                             Log::warning("Failed to fetch image data for {$key} from {$imageUrl}");
+                            $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
                         }
                     } catch (\Exception $e) {
                         Log::error("Error fetching image for {$key}: {$e->getMessage()} from {$imageUrl}");
+                        $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
                     }
                 } else {
                     Log::warning("Invalid or empty URL for {$key}: {$imageUrl}");
+                    $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
                 }
             }
         }
+
 
 
         return  $responseData;

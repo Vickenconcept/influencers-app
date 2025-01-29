@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('budget'); 
             $table->date('start_date')->nullable(); 
             $table->date('end_date')->nullable(); 
+            $table->date('invite_end_date')->nullable(); 
+            $table->integer('type')->default(1); 
             $table->string('status')->default('pending'); 
             $table->timestamps();
         });

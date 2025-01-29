@@ -70,39 +70,70 @@ class FetchInfluencerDetailsJob implements ShouldQueue
                 }
 
 
-                // Loop over avatar and cover to encode images to base64
+
+
                 // foreach (['avatar', 'cover'] as $key) {
                 //     if (isset($detail['data'][$platformKey][$key])) {
                 //         $imageUrl = $detail['data'][$platformKey][$key];
-                //         Log::info("Processing image URL for {$key}: {$imageUrl}");
 
-                //         try {
-                //             $imageResponse = $client->get($imageUrl, [
-                //                 'headers' => [
-                //                     'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-                //                     'Accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
-                //                     'Accept-Encoding' => 'gzip, deflate, br',
-                //                 ]
-                //             ]);
+                //         if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                //             Log::info("Processing image URL for {$key}: {$imageUrl}");
 
-                //             if ($imageResponse->getStatusCode() == 200) {
-                //                 $imageData = $imageResponse->getBody()->getContents();
+                //             try {
+                //                 $imageData = file_get_contents($imageUrl);
 
-                //                 $imageType = $imageResponse->getHeader('Content-Type')[0] ?? 'image/jpeg'; // Default to 'image/jpeg' if not provided
+                //                 if ($imageData !== false) {
+                //                     $imageType = mime_content_type($imageUrl) ?: 'image/jpeg'; 
+                //                     $base64Image = base64_encode($imageData);
 
-                //                 $base64Image = base64_encode($imageData);
+                //                     $detail['data'][$platformKey][$key] = 'data:' . $imageType . ';base64,' . $base64Image;
 
-                //                 $detail['data'][$platformKey][$key] = 'data:' . $imageType . ';base64,' . $base64Image;
-
-                //                 Log::info("Base64 encoded image for {$key} on platform {$this->platform}");
-                //             } else {
-                //                 Log::warning("Failed to fetch image: {$imageUrl} for {$key} on platform {$this->platform} with status code " . $imageResponse->getStatusCode());
+                //                     Log::info("Base64 encoded image for {$key} on platform {$this->platform}");
+                //                 } else {
+                //                     Log::warning("Failed to fetch image data from URL for {$key}: {$imageUrl}");
+                //                 }
+                //             } catch (\Exception $e) {
+                //                 Log::error("Error fetching image: {$e->getMessage()} for {$key} on platform {$this->platform}");
                 //             }
-                //         } catch (\Exception $e) {
-                //             Log::error("Error fetching image: {$e->getMessage()} for {$key} on platform {$this->platform}");
+                //         } else {
+                //             Log::warning("Invalid or empty image URL for {$key}: {$imageUrl}");
                 //         }
                 //     }
                 // }
+
+                // foreach (['avatar', 'cover'] as $key) {
+                //     if (isset($detail['data'][$platformKey][$key])) {
+                //         $imageUrl = $detail['data'][$platformKey][$key];
+
+                //         if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                //             Log::info("Processing image URL for {$key}: {$imageUrl}");
+
+                //             try {
+                //                 $imageData = @file_get_contents($imageUrl);
+
+                //                 if ($imageData !== false) {
+                //                     $imageType = @mime_content_type($imageUrl) ?: 'image/jpeg';
+                //                     $base64Image = base64_encode($imageData);
+
+                //                     $detail['data'][$platformKey][$key] = 'data:' . $imageType . ';base64,' . $base64Image;
+
+                //                     Log::info("Base64 encoded image for {$key} on platform {$this->platform}");
+                //                 } else {
+                //                     Log::warning("Failed to fetch image data from URL for {$key}: {$imageUrl}");
+                //                     $detail['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                //                     Log::warning("got here {$key}:" .  $detail['data'][$platformKey][$key]);
+                //                 }
+                //             } catch (\Exception $e) {
+                //                 Log::error("Error fetching image: {$e->getMessage()} for {$key} on platform {$this->platform}");
+                //                 $detail['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                //             }
+                //         } else {
+                //             Log::warning("Invalid or empty image URL for {$key}: {$imageUrl}");
+                //             $detail['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                //         }
+                //     }
+                // }
+
 
                 foreach (['avatar', 'cover'] as $key) {
                     if (isset($detail['data'][$platformKey][$key])) {
@@ -112,27 +143,38 @@ class FetchInfluencerDetailsJob implements ShouldQueue
                             Log::info("Processing image URL for {$key}: {$imageUrl}");
                 
                             try {
-                                $imageData = file_get_contents($imageUrl);
+                                $imageData = @file_get_contents($imageUrl);
                 
                                 if ($imageData !== false) {
-                                    $imageType = mime_content_type($imageUrl) ?: 'image/jpeg'; 
+                                    $imageType = @mime_content_type($imageUrl) ?: 'image/jpeg';
                                     $base64Image = base64_encode($imageData);
-                
                                     $detail['data'][$platformKey][$key] = 'data:' . $imageType . ';base64,' . $base64Image;
-                
                                     Log::info("Base64 encoded image for {$key} on platform {$this->platform}");
                                 } else {
                                     Log::warning("Failed to fetch image data from URL for {$key}: {$imageUrl}");
+                
+                                    $detail['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                
+                                    Log::warning("After setting fallback: {$key} = " . json_encode($detail['data'][$platformKey][$key]));
                                 }
                             } catch (\Exception $e) {
                                 Log::error("Error fetching image: {$e->getMessage()} for {$key} on platform {$this->platform}");
+                
+                                $detail['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                
+                                Log::warning("After setting fallback (Exception): {$key} = " . json_encode($detail['data'][$platformKey][$key]));
                             }
                         } else {
                             Log::warning("Invalid or empty image URL for {$key}: {$imageUrl}");
+                
+                            $detail['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                
+                            Log::warning("After setting fallback (Invalid URL): {$key} = " . json_encode($detail['data'][$platformKey][$key]));
                         }
                     }
                 }
-                
+
+
 
                 $cachedDetails = Cache::get($this->cacheKey, []);
                 $cachedDetails[] = $detail;

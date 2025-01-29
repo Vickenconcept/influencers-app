@@ -34,7 +34,7 @@ class Instagram extends Component
     public function mount()
     {
         $this->followers = 1000;
-        $this->details =  Cache::get("{$this->platform}_details") ?? [];
+        $this->details =  Cache::get("{$this->platform}_details" . auth()->id()) ?? [];
 
         $this->groups = InfluncersGroup::latest()->get();
     }
@@ -71,7 +71,7 @@ class Instagram extends Component
 
     public function resetData(){
 
-        Cache::forget("{$this->platform}_details");
+        Cache::forget("{$this->platform}_details" . auth()->id());
         $this->dispatch('refreshPage');
         return ;
     }
