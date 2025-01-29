@@ -207,7 +207,10 @@ class GroupShow extends Component
     }
     public function sendCustomCampaignInvite()
     {
-        if ($this->selectedEmail == 'null' || $this->selectedEmail == "") return;
+        if ($this->selectedEmail == 'null' || $this->selectedEmail == "") {
+            $this->dispatch('email-sent', status: 'error', msg: 'Failed: Select email');
+            return;
+        }
 
 
         // dd($this->customEmailBody);
@@ -215,6 +218,7 @@ class GroupShow extends Component
             $this->customEmailBody,
         ));
 
+        $this->dispatch('email-sent', status: 'success',  msg: 'Email set successfully');
         return;
     }
 
