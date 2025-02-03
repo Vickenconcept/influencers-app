@@ -29,6 +29,7 @@ class InfluencerService
         $country = null,
         $lang = null,
         $platform = null,
+        $hasEmail = null,
     ) {
 
         $filters = $this->filtersOption(
@@ -41,14 +42,16 @@ class InfluencerService
             $engageRate,
             $country,
             $lang,
+            $hasEmail,
         );
 
 
-        $maxResults = 20;
+        // dd($filters);
+        $maxResults = 10;
         $sortBy = $platform == 'youtube' ? 'subscribers' : 'followers';
         $response = $this->client->request('POST', $this->config['searchEndpoint'], [
             'body' => json_encode([
-                "maxResults" => min($maxResults, 20),
+                "maxResults" => min($maxResults, 10),
                 "sortBy" => $sortBy,
                 // "sortBy" => "followers",
                 "offset" => 0,
@@ -87,6 +90,7 @@ class InfluencerService
         $engageRate,
         $country,
         $lang,
+        $hasEmail = null,
     ) {
         $cacheKey = "{$platform}_details" . auth()->id();
 
@@ -107,6 +111,7 @@ class InfluencerService
             $country,
             $lang,
             $platform,
+            $hasEmail,
         );
 
         $platformIds = $influencers;
@@ -233,6 +238,7 @@ class InfluencerService
         $engageRate,
         $country,
         $lang,
+        $hasEmail,
     ) {
         $filters = [];
 
@@ -288,6 +294,13 @@ class InfluencerService
                 "filterKey" => "lang",
                 "op" => "=",
                 "value" => $lang
+            ];
+        }
+        if ($hasEmail !== null) {
+            $filters[] = [
+                "filterKey" => "hasEmail",
+                "op" => "=",
+                "value" => $hasEmail
             ];
         }
 

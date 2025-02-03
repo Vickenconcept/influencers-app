@@ -1,7 +1,7 @@
 <div class="h-full overflow-y-auto" x-data="{ tiktok_influencer_dettail: null, modalIsOpen: false }">
     {{-- Stop trying to control. --}}
 
-    <div class="my-6">
+    <div class="my-6" id="some-element">
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
             <h2 class="text-stone-700 text-xl font-bold">Apply filters</h2>
             <p class="mt-1 text-sm">Use filters to further refine search</p>
@@ -381,9 +381,17 @@
     </div>
 
 
-
-
-
-
+    <div class="border-t border-gray-200 px-4 py-5 sm:p-0 w-full" wire:loading wire:target="getInfluencer">
+        <div class="flex flex-col items-center justify-center bg-white fixed top-0 left-0 w-full h-screen z-50">
+            <div class='flex space-x-2 justify-center items-center'>
+                <span class='sr-only'>Loading...</span>
+                <div class='h-8 w-8 bg-gray-900 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                <div class='h-8 w-8 bg-gray-700 rounded-full animate-bounce [animation-delay:-0.15s]'>
+                </div>
+                <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce'></div>
+            </div>
+            <div>Loading....</div>
+        </div>
+    </div>
 
 </div>

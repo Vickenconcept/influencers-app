@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <lable class="text-lg font-semibold">Bugdget <span class="text-red-600">*</span></lable> <br>
+                        <lable class="text-lg font-semibold">Budget <span class="text-red-600">*</span></lable> <br>
                         <input class="form-control" id="budget" type="number" name="budget"
                             placeholder="My Budget eg. $200">
                     </div>
@@ -198,17 +198,13 @@
             // You can customize the appearance and behavior here
         });
         flatpickr("#endDate", {
-            // Configuration options for Flatpickr
-            // You can customize the appearance and behavior here
         });
 
         flatpickr("#inviteEndDate", {
-            // Configuration options for Flatpickr
-            // You can customize the appearance and behavior here
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -125,7 +125,6 @@ class GroupShow extends Component
         $response = trim($response, "\"`json");
 
         $contactInfo = json_decode($response, true);
-
         if (is_array($contactInfo) && !empty($contactInfo)) {
             $emails = [];
             $numbers = [];
@@ -168,12 +167,12 @@ class GroupShow extends Component
                 }
             }
         } else {
-            $influencer = Influencer::find($influencers_id);
-            if ($influencer) {
-                $influencer->emails = json_encode([]);
-                $influencer->phone_numbers = json_encode([]);
-                $influencer->update();
-            }
+            // $influencer = Influencer::find($influencers_id);
+            // if ($influencer) {
+            //     $influencer->emails = json_encode([]);
+            //     $influencer->phone_numbers = json_encode([]);
+            //     $influencer->update();
+            // }
         }
 
         $this->dispatch('refreshPage');
@@ -213,7 +212,6 @@ class GroupShow extends Component
         }
 
 
-        // dd($this->customEmailBody);
         Mail::to('vicken408@gmail.com')->send(new InfluencerCustomInvite(
             $this->customEmailBody,
         ));

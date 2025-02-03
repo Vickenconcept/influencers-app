@@ -1,5 +1,6 @@
 import './bootstrap';
 import 'flowbite'
+import './driver'
 
 
 import notification from './notification';

@@ -55,6 +55,12 @@
                         class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                 </div>
 
+                <div class="flex flex-col">
+                    <label for="isVerified" class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
+                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 "> <span class="font-bold">isVerified</span>
+                    </label>
+                </div>
+
             </div>
 
             <div class="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">
@@ -65,7 +71,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="grid sm:grid-cols-3 gap-2">
 
         <!-- component -->
@@ -190,8 +196,8 @@
                 <h3 id="defaultModalTitle" class="font-semibold tracking-wide text-neutral-900 ">Add To Group
                 </h3>
                 <button @click="modalIsOpen = false" aria-label="close modal">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor"
-                        fill="none" stroke-width="1.4" class="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                        stroke="currentColor" fill="none" stroke-width="1.4" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
@@ -347,6 +353,20 @@
                     class="cursor-pointer whitespace-nowrap rounded-md {{ empty($selectedGroups) ? 'bg-gray-400' : 'bg-black' }} bg-black px-4 py-2 text-center text-sm font-medium tracking-wide text-neutral-100 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:opacity-100 active:outline-offset-0 ">Upgrade
                     Now</button>
             </div>
+        </div>
+    </div>
+
+
+    <div class="border-t border-gray-200 px-4 py-5 sm:p-0 w-full" wire:loading wire:target="getInfluencer">
+        <div class="flex flex-col items-center justify-center bg-white fixed top-0 left-0 w-full h-screen z-50">
+            <div class='flex space-x-2 justify-center items-center'>
+                <span class='sr-only'>Loading...</span>
+                <div class='h-8 w-8 bg-gray-900 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                <div class='h-8 w-8 bg-gray-700 rounded-full animate-bounce [animation-delay:-0.15s]'>
+                </div>
+                <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce'></div>
+            </div>
+            <div>Loading....</div>
         </div>
     </div>
 

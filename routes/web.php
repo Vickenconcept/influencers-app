@@ -63,8 +63,9 @@ Route::middleware(['auth'])->group(function () {
         return view('influencer', compact('influencer_id'));
     })->name('show.influencer');
 
-    Route::resource('groups', InfluncersGroupController::class);
+    Route::post('influencers/{influencer}', [InfluencerController::class, 'destroy'])->name('influencer.delete');
     Route::resource('influencers', InfluencerController::class);
+    Route::resource('groups', InfluncersGroupController::class);
     Route::post('campaign/update-name', [CampaignController::class, 'changeName'])->name('changeCampaignName');
     Route::resource('campaigns', CampaignController::class);
     // Route::post('inquiries/{campaignId}/{influencerId}', [CampaignInquiryController::class, 'sendInquiry']);

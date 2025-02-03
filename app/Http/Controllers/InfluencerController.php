@@ -70,6 +70,7 @@ class InfluencerController extends Controller
      */
     public function destroy(Influencer $influencer)
     {
-        //
+        $influencer->delete();
+        return back()->with('success', 'Deleted Successfully');
     }
 }

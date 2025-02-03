@@ -1,4 +1,4 @@
-<div  class="h-full overflow-y-auto" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
+<div class="h-full overflow-y-auto" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
 
     <div class="my-6">
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
@@ -31,6 +31,24 @@
                     <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers"
                         min="0"
                         class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="isVerified"
+                        class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
+                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"
+                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
+                        <span class="font-bold">isVerified</span>
+                    </label>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="hasEmail"
+                        class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
+                        <input type="checkbox" wire:model="hasEmail" name="hasEmail" id="hasEmail"
+                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
+                        <span class="font-bold">hasEmail</span>
+                    </label>
                 </div>
 
             </div>
@@ -68,11 +86,6 @@
                 </ul>
                 <!-- Banner Profile -->
                 <div class="relative">
-                    {{-- <img src="/proxy-image?url={{ urlencode($detail['data']['basicFacebook']['cover']) }}" alt="Banner Profile"
-                        class="w-full rounded-t-lg h-32" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1735490246994-ea609f82f249?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8';">
-                        <img src="/proxy-image?url={{ urlencode($detail['data']['basicFacebook']['avatar']) }}" alt="Profile Picture"
-                        class="absolute bottom-0 left-2/4 transform -translate-x-1/2 translate-y-1/2 w-24 h-24 rounded-full border-4 border-white" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1735490246994-ea609f82f249?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8';"> --}}
-
                     <img src="{{ $detail['data']['basicFacebook']['cover'] }}" alt="Banner Profile"
                         class="w-full rounded-t-lg h-32"
                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1735490246994-ea609f82f249?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8';">
@@ -110,8 +123,8 @@
                     {{ flatten_array($detail['data']['basicFacebook']['hashtags'], ' | ', 3) }} </p>
                 <!-- Social Links -->
                 <div class="flex items-center mt-4 space-x-4">
-                    <a href="https://facebook.com/{{ $detail['data']['basicFacebook']['facebookId'] }}" target="_blank"
-                        class="text-blue-500 hover:underline">
+                    <a href="https://facebook.com/{{ $detail['data']['basicFacebook']['facebookId'] }}"
+                        target="_blank" class="text-blue-500 hover:underline">
                         Facebook
                         <i class="bx bx-link-external text-md"></i>
                     </a>
@@ -144,16 +157,9 @@
     </div>
     @if (count($details) > 0)
         <div class="py-20 mb-10 col-span-3 flex justify-center">
-            <button  wire:click="$dispatch('refreshPage')">Load More</button>
+            <button wire:click="$dispatch('refreshPage')">Load More</button>
         </div>
     @endif
-
-
-
-
-
-
-
 
 
     <div x-cloak x-show="modalIsOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"
@@ -334,10 +340,16 @@
 
 
 
-   
-
-
-
-
-
+    <div class="border-t border-gray-200 px-4 py-5 sm:p-0 w-full" wire:loading wire:target="getInfluencer">
+        <div class="flex flex-col items-center justify-center bg-white fixed top-0 left-0 w-full h-screen z-50">
+            <div class='flex space-x-2 justify-center items-center'>
+                <span class='sr-only'>Loading...</span>
+                <div class='h-8 w-8 bg-gray-900 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                <div class='h-8 w-8 bg-gray-700 rounded-full animate-bounce [animation-delay:-0.15s]'>
+                </div>
+                <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce'></div>
+            </div>
+            <div>Loading....</div>
+        </div>
+    </div>
 </div>

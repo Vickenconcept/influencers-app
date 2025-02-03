@@ -69,8 +69,9 @@ class InfluncersGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(InfluncersGroup $influncersGroup)
+    public function destroy(InfluncersGroup $group)
     {
-        //
+        $group->delete();
+        return back()->with('success', 'Deleted Successfully');
     }
 }

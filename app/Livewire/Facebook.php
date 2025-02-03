@@ -21,7 +21,8 @@ class Facebook extends Component
         $followers = 10000,
         $engageRate = null,
         $country = null,
-        $lang = null;
+        $lang = null,
+        $hasEmail = null;
 
     public $selectedGroups = [], $selectInfluencer;
     public $groups, $name, $description;
@@ -62,9 +63,10 @@ class Facebook extends Component
             $this->engageRate,
             $this->country,
             $this->lang,
+            $this->hasEmail,
 
         );
-        // $this->details = $service->fetchPlatformInfluencerDetails($this->platform, $this->followers);
+        
         // dd($this->details);
         return $this->details;
     }

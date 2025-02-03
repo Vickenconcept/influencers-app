@@ -64,7 +64,7 @@ class Instagram extends Component
             $this->lang,
 
         );
-        // $this->details = $service->fetchPlatformInfluencerDetails($this->platform, $this->followers);
+        
         // dd($this->details);
         return $this->details;
     }

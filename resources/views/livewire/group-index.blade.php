@@ -1,30 +1,27 @@
 <div class="overflow-y-auto h-screen pb-28">
-    <div >
+    <div>
         <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:justify-between my-10">
 
             <div class="">
-                <select wire:model.live="sortOrder"
-                class="form-control md:!w-[110px] grow">
-                <option value="latest">Latest</option>
-                <option value="oldest">Oldest</option>
-            </select>
+                <select wire:model.live="sortOrder" class="form-control md:!w-[110px] grow">
+                    <option value="latest">Latest</option>
+                    <option value="oldest">Oldest</option>
+                </select>
 
             </div>
             <div class="flex items-center space-x-3">
-               <div>
-                <input type="text" wire:model.live="search" id="name"
-                class="form-control md:!w-[310px] grow"
-                placeholder="Enter Group name" required />
-               </div>
+                <div>
+                    <input type="text" wire:model.live="search" id="name" class="form-control md:!w-[310px] grow"
+                        placeholder="Enter Group name" required />
+                </div>
                 <div>
                     <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class="btn !whitespace-nowrap"
-                type="button">
-                <i class="bx bx-plus text-md"></i>Create Group
-            </button>
+                        class="btn !whitespace-nowrap" type="button">
+                        <i class="bx bx-plus text-md"></i>Create Group
+                    </button>
                 </div>
             </div>
-           
+
 
             <!-- Main modal -->
             <div id="authentication-modal" tabindex="-1" aria-hidden="true"
@@ -55,15 +52,13 @@
                                 <div>
                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Name
                                         *</label>
-                                    <input type="text" name="name" id="name"
-                                        class="form-control "
+                                    <input type="text" name="name" id="name" class="form-control "
                                         placeholder="Enter Group name" required />
                                 </div>
                                 <div>
                                     <label for="description"
                                         class="block mb-2 text-sm font-medium text-gray-900 ">Description</label>
-                                    <textarea name="description" id="description"
-                                        class="form-control"></textarea>
+                                    <textarea name="description" id="description" class="form-control"></textarea>
                                 </div>
 
                                 <button type="submit"
@@ -78,28 +73,34 @@
 
         </div>
         <ul class="w-full  divide-gray-200  grid sm:grid-cols-3 gap-5">
-            @foreach ($groups as $group)
+            @forelse ($groups as $group)
                 <div class="p-4 bg-gray-50  rounded-2xl shadow-sm space-y-14 border-2 hover:!border-blue-400 ">
                     <div class="flex justify-between">
-                        <span
-                            class="  rounded-full">
+                        <span class="  rounded-full">
                             {{-- {{ $group->image }} --}}
                             @if ($group->latestInfluencer)
                                 @php
                                     $content = json_decode($group->latestInfluencer->content);
                                 @endphp
-                                <img src="{{ $content->avatar?: asset('images/logo.png') }}" alt="" class="rounded-full size-8">
+                                <img src="{{ $content->avatar ?: asset('images/logo.png') }}" alt=""
+                                    class="rounded-full size-8">
                             @endif
                         </span>
 
-                        <div class="space-y-4">
-                                <a  href="{{ route('groups.show', ['group' => $group->id]) }}"
-                                    class="bg-gray-200 hover:bg-blue-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
-                                    <i
-                                        class="bx bx-show font-medium group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
-                                    <span
-                                        class="group-hover:text-white delay-100 transition-all duration-500 ease-in-out">Preview</span>
-                                </a>
+                        <div class=" space-x-4 items-center flex ">
+                            <button type="button" data-item-id="{{ $group->id }}"
+                                class="delete-btn bg-gray-200 hover:bg-red-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
+                                <i
+                                    class="bx bx-trash font-medium group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
+
+                            </button>
+                            <a href="{{ route('groups.show', ['group' => $group->id]) }}"
+                                class="bg-gray-200 hover:bg-blue-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
+                                <i
+                                    class="bx bx-show font-medium group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
+                                <span
+                                    class="group-hover:text-white delay-100 transition-all duration-500 ease-in-out">Preview</span>
+                            </a>
 
                         </div>
                     </div>
@@ -114,11 +115,72 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-span-3 bg-gray-50 text-gray-500 py-8 flex flex-col justify-center items-center rounded ">
+                    <span>No Data Yet.</span>
+                    <p><i class='bx bxs-folder-open text-4xl'></i></p>
+                </div>
+            @endforelse
 
             <div class="md:col-span-3">
                 {{ $groups->links() }}
             </div>
         </ul>
     </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let deleteButtons = document.querySelectorAll('.delete-btn');
+
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    let itemId = button.getAttribute('data-item-id');
+
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var deleteRoute =
+                                "{{ route('groups.destroy', ['group' => ':itemId']) }}";
+                            deleteRoute = deleteRoute.replace(':itemId', itemId);
+
+                            fetch(deleteRoute, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    }
+                                })
+                                .then(response => {
+                                    Swal.fire({
+                                        title: "Deleted!",
+                                        text: "Your item has been deleted.",
+                                        icon: "success",
+                                        confirmButtonColor: "#56ab2f"
+                                    }).then(() => {
+                                        location
+                                            .reload();
+                                    });
+                                })
+                                .catch(error => {
+                                    Swal.fire({
+                                        title: "Error",
+                                        text: "Failed to delete the item",
+                                        icon: "error",
+                                        confirmButtonColor: "#d33"
+                                    });
+                                });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </div>

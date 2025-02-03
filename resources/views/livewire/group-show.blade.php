@@ -1,5 +1,17 @@
     <div x-data="{ openModal: false, isContentModal: false, influencer_id: null, influencer_content: null }" class="overflow-y-auto h-screen pb-28">
-        <h3 class="capitalize font-bold text-3xl pb-10">{{ $group->name }}</h3>
+        <div class="flex justify-between items-center pb-10">
+
+            <h3 class="capitalize font-bold text-3xl ">{{ $group->name }}</h3>
+            <div>
+                <button type="button" data-item-id="{{ $group->id }}"
+                    class="group-delete-btn bg-gray-200 hover:bg-red-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
+                    <i
+                        class="bx bx-trash font-medium text-red-500 group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
+
+                </button>
+            </div>
+        </div>
+
         {{-- overflow-auto lg:overflow-visible --}}
 
         <div class=" ">
@@ -17,52 +29,55 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($influencers as $influencer)
-                        {{-- {{ $influencer->content }} --}}
-                        @php
-                            $content = json_decode($influencer->content);
-                        @endphp
-                        <tr class="bg-gray-200" wire:key="influencer-{{ $influencer->id }}">
-                            <td class="p-3">
-                                <div class="flex align-items-center">
-                                    {{-- <a href="{{ route('influencers.show', $influencer) }}"> --}}
-                                    <img class="rounded-full h-12 w-12  object-cover cursor-pointer"
-                                        @click="isContentModal = true, influencer_id= @js($influencer->id) , influencer_content = @js($content)"
-                                        src="{{ $content->avatar }}" wire:click="getEveluatedData(@js($influencer->id))" />
-                                    {{-- </a> --}}
-                                    <div class="ml-3">
-                                        <div class="">
-                                            <a href="{{ route('influencers.show', $influencer) }}"
-                                                class="hover:underline">
-                                                {{-- name --}}
-                                                @isset($content->facebookName)
-                                                    {{ $content->facebookName }}
-                                                @endisset
-                                                @isset($content->tiktokName)
-                                                    {{ $content->tiktokName }}
-                                                @endisset
-                                                @isset($content->instagramName)
-                                                    {{ $content->instagramName }}
-                                                @endisset
-                                                @isset($content->youtubeName)
-                                                    {{ $content->youtubeName }}
-                                                @endisset
-                                            </a>
-                                        </div>
-                                        <div class="text-gray-800 mt-2">
-                                            @if (json_decode($influencer->emails, true) != null)
-                                                @if (count(json_decode($influencer->emails, true)) > 0)
-                                                    <select class="rounded-lg border-0 py-1 w-24 text-sm font-semibold">
-                                                        <option value="" selected disabled>Emails</option>
-                                                        @foreach (json_decode($influencer->emails, true) ?? [] as $email)
-                                                            <option value="{{ $email }}">{{ $email }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                    @if (count($influencers) > 0)
+                        @foreach ($influencers as $influencer)
+                            {{-- {{ $influencer->content }} --}}
+                            @php
+                                $content = json_decode($influencer->content);
+                            @endphp
+                            <tr class="bg-gray-200" wire:key="influencer-{{ $influencer->id }}">
+                                <td class="p-3">
+                                    <div class="flex align-items-center">
+                                        {{-- <a href="{{ route('influencers.show', $influencer) }}"> --}}
+                                        <img class="rounded-full h-12 w-12  object-cover cursor-pointer"
+                                            @click="isContentModal = true, influencer_id= @js($influencer->id) , influencer_content = @js($content)"
+                                            src="{{ $content->avatar }}"
+                                            wire:click="getEveluatedData(@js($influencer->id))" />
+                                        {{-- </a> --}}
+                                        <div class="ml-3">
+                                            <div class="">
+                                                <a href="{{ route('influencers.show', $influencer) }}"
+                                                    class="hover:underline">
+                                                    {{-- name --}}
+                                                    @isset($content->facebookName)
+                                                        {{ $content->facebookName }}
+                                                    @endisset
+                                                    @isset($content->tiktokName)
+                                                        {{ $content->tiktokName }}
+                                                    @endisset
+                                                    @isset($content->instagramName)
+                                                        {{ $content->instagramName }}
+                                                    @endisset
+                                                    @isset($content->youtubeName)
+                                                        {{ $content->youtubeName }}
+                                                    @endisset
+                                                </a>
+                                            </div>
+                                            <div class="text-gray-800 mt-2">
+                                                @if (json_decode($influencer->emails, true) != null)
+                                                    @if (count(json_decode($influencer->emails, true)) > 0)
+                                                        <select
+                                                            class="rounded-lg border-0 py-1 w-24 text-sm font-semibold">
+                                                            <option value="" selected disabled>Emails</option>
+                                                            @foreach (json_decode($influencer->emails, true) ?? [] as $email)
+                                                                <option value="{{ $email }}">{{ $email }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
+                                                @else
                                                 @endif
-                                            @else
-                                            @endif
-                                            {{-- <div class="flex">
+                                                {{-- <div class="flex">
                                                 <button
                                                     wire:click="getEmails('{{ $influencer->id }}', '{{ isset($content->youtubeId) ? $content->youtubeId : '' }}')"
                                                     class="bg-white rounded-lg px-2 py-1 text-sm  focus:ring-2 focus:ring-gray-400 ">Get
@@ -72,63 +87,82 @@
                                                     class="bg-white rounded-lg px-2 py-1 text-sm  focus:ring-2 focus:ring-gray-400 ">Check
                                                     with AI</button>
                                             </div> --}}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </div>
-                                <div class="flex py-3 space-x-1">
-                                    <button
-                                        wire:click="getEmails('{{ $influencer->id }}', '{{ isset($content->youtubeId) ? $content->youtubeId : '' }}')"
-                                        class="bg-white rounded-lg px-2 py-1 text-xs font-semibold  focus:ring-2 focus:ring-gray-400 ">
-                                        <span wire:target="getEmails" wire:loading.class="opacity-50">Get email</span>
-                                        {{-- <span wire:loading wire:target="getEmails">...</span> --}}
+                                    </div>
+                                    <div class="flex py-3 space-x-1">
+                                        <button
+                                            wire:click="getEmails('{{ $influencer->id }}', '{{ isset($content->youtubeId) ? $content->youtubeId : '' }}')"
+                                            class="bg-white rounded-lg px-2 py-1 text-xs font-semibold  focus:ring-2 focus:ring-gray-400 ">
+                                            <span wire:target="getEmails" wire:loading.class="opacity-50">Get
+                                                email</span>
+                                            {{-- <span wire:loading wire:target="getEmails">...</span> --}}
+                                        </button>
+                                        <button
+                                            wire:click="checkContactWithAI({{ json_encode($influencer->content, true) }}, '{{ $influencer->id }}')"
+                                            class="bg-white rounded-lg px-2 py-1 text-xs font-semibold  focus:ring-2 focus:ring-gray-400 ">
+                                            <span wire:target="checkContactWithAI" wire:loading.class="opacity-50">Check
+                                                with AI</span>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="p-3 font-semibold capitalize">
+                                    @isset($influencer->platform)
+                                        {{ $influencer->platform }}
+                                    @endisset
+                                </td>
+                                <td class="p-3">
+                                    @isset($content->lang)
+                                        {{ $content->lang }}
+                                    @endisset
+                                </td>
+                                <td class="p-3">
+                                    @isset($content->country)
+                                        {{ $content->country }}
+                                    @endisset
+                                </td>
+                                <td class="p-3 font-bold">
+                                    @isset($content->followers)
+                                        {{ format_number($content->followers) }}
+                                    @endisset
+                                    @isset($content->subscribers)
+                                        {{ format_number($content->subscribers) }}
+                                    @endisset
+                                </td>
+                                <td class="p-3">
+                                    <span class="bg-green-400 text-gray-50 rounded-md px-2">available</span>
+                                </td>
+                                <td class="p-3 ">
+                                    @isset($content->hashtags)
+                                        <span>{{ flatten_array($content->hashtags, ' | ', 4) }} </span>
+                                    @endisset
+                                </td>
+                                <td class="p-3 flex items-center space-x-1">
+                                    <button @click="openModal = true"
+                                        wire:click="setInfluencer('{{ $influencer->id }}', '{{ isset($influencer->emails) ? $influencer->emails : '' }}')">
+                                        <i
+                                            class='bx bx-mail-send font-medium text-green-500 hover:text-green-700 mr-1 text-lg delay-100 transition-all duration-500 ease-in-out'></i>
                                     </button>
-                                    <button
-                                        wire:click="checkContactWithAI({{ json_encode($influencer->content, true) }}, '{{ $influencer->id }}')"
-                                        class="bg-white rounded-lg px-2 py-1 text-xs font-semibold  focus:ring-2 focus:ring-gray-400 ">
-                                        <span wire:target="checkContactWithAI" wire:loading.class="opacity-50">Check
-                                            with AI</span>
+                                    <button type="button" data-item-id="{{ $influencer->id }}" class="delete-btn">
+                                        <i
+                                            class="bx bx-trash font-medium text-red-500 hover:text-red-700 mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
                                     </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td class="col" colspan="8">
+                                <div
+                                    class="bg-gray-50 text-gray-500 py-8 flex flex-col justify-center items-center rounded ">
+                                    <span>No Data Yet.</span>
+                                    <p><i class='bx bxs-folder-open text-4xl'></i></p>
                                 </div>
-                            </td>
-                            <td class="p-3 font-semibold capitalize">
-                                @isset($influencer->platform)
-                                    {{ $influencer->platform }}
-                                @endisset
-                            </td>
-                            <td class="p-3">
-                                @isset($content->lang)
-                                    {{ $content->lang }}
-                                @endisset
-                            </td>
-                            <td class="p-3">
-                                @isset($content->country)
-                                    {{ $content->country }}
-                                @endisset
-                            </td>
-                            <td class="p-3 font-bold">
-                                @isset($content->followers)
-                                    {{ format_number($content->followers) }}
-                                @endisset
-                                @isset($content->subscribers)
-                                    {{ format_number($content->subscribers) }}
-                                @endisset
-                            </td>
-                            <td class="p-3">
-                                <span class="bg-green-400 text-gray-50 rounded-md px-2">available</span>
-                            </td>
-                            <td class="p-3 ">
-                                @isset($content->hashtags)
-                                    <span>{{ flatten_array($content->hashtags, ' | ', 4) }} </span>
-                                @endisset
-                            </td>
-                            <td class="p-3 ">
-                                <button @click="openModal = true"
-                                    wire:click="setInfluencer('{{ $influencer->id }}', '{{ isset($influencer->emails) ? $influencer->emails : '' }}')">Send
-                                    Campaign </button>
                             </td>
                         </tr>
-                    @endforeach
+
+                    @endif
 
                 </tbody>
             </table>
@@ -472,7 +506,8 @@
                         <div class='flex space-x-2 justify-center items-center bg-white h-32'>
                             <span class='sr-only'>Loading...</span>
                             <div class='h-8 w-8 bg-gray-900 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-                            <div class='h-8 w-8 bg-gray-700 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                            <div class='h-8 w-8 bg-gray-700 rounded-full animate-bounce [animation-delay:-0.15s]'>
+                            </div>
                             <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce'></div>
                         </div>
                     </div>
@@ -534,9 +569,10 @@
                                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                 <td class="p-4">
                                                     @isset($post['url'])
-                                                    <a href="{{ $post['url'] }}" target="_blank">
-                                                        <img src="https://placehold.co/600x400/gray/white?text=🎞️\nvideo" alt="TikTok Video Snapshot" class="size-16 border rounded-sm">
-                                                    </a>
+                                                        <a href="{{ $post['url'] }}" target="_blank">
+                                                            <img src="https://placehold.co/600x400/gray/white?text=🎞️\nvideo"
+                                                                alt="TikTok Video Snapshot" class="size-16 border rounded-sm">
+                                                        </a>
                                                         {{-- <img src="$post['url']" class="w-16 md:w-32 max-w-full max-h-full"
                                                             alt="Apple Watch"> --}}
                                                         {{-- {{ $post['url'] }} --}}
@@ -584,11 +620,6 @@
         </style>
 
         <script>
-            // Toggle dark mode based on system preference
-            // if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            //     document.documentElement.classList.add('dark');
-            // }
-
             // Add hover effect to skill tags
             const skillTags = document.querySelectorAll('.bg-indigo-100');
             skillTags.forEach(tag => {
@@ -637,6 +668,115 @@
                     const campaignId = data.id;
                     var summernote = $('#summernote-' + campaignId);
                     summernote.summernote('code', content);
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let deleteButtons = document.querySelectorAll('.delete-btn');
+
+                deleteButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        let itemId = button.getAttribute('data-item-id');
+
+                        Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var deleteRoute =
+                                    "{{ route('influencer.delete', ['influencer' => ':itemId']) }}";
+                                deleteRoute = deleteRoute.replace(':itemId', itemId);
+
+                                fetch(deleteRoute, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    })
+                                    .then(response => {
+                                        Swal.fire({
+                                            title: "Deleted!",
+                                            text: "Your item has been deleted.",
+                                            icon: "success",
+                                            confirmButtonColor: "#56ab2f"
+                                        }).then(() => {
+                                            location
+                                                .reload();
+                                        });
+                                    })
+                                    .catch(error => {
+                                        Swal.fire({
+                                            title: "Error",
+                                            text: "Failed to delete the item",
+                                            icon: "error",
+                                            confirmButtonColor: "#d33"
+                                        });
+                                    });
+                            }
+                        });
+                    });
+                });
+            });
+       
+
+            // delete group
+            document.addEventListener('DOMContentLoaded', function() {
+                let deleteButtons = document.querySelectorAll('.group-delete-btn');
+
+                deleteButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        let itemId = button.getAttribute('data-item-id');
+
+                        Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var deleteRoute =
+                                    "{{ route('groups.destroy', ['group' => ':itemId']) }}";
+                                deleteRoute = deleteRoute.replace(':itemId', itemId);
+
+                                fetch(deleteRoute, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    })
+                                    .then(response => {
+                                        Swal.fire({
+                                            title: "Deleted!",
+                                            text: "Your item has been deleted.",
+                                            icon: "success",
+                                            confirmButtonColor: "#56ab2f"
+                                        }).then(() => {
+                                            location.href = '{{ route('groups.index') }}';
+                                        });
+                                    })
+                                    .catch(error => {
+                                        Swal.fire({
+                                            title: "Error",
+                                            text: "Failed to delete the item",
+                                            icon: "error",
+                                            confirmButtonColor: "#d33"
+                                        });
+                                    });
+                            }
+                        });
+                    });
                 });
             });
         </script>

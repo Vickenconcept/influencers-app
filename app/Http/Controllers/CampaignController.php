@@ -32,7 +32,7 @@ class CampaignController extends Controller
             'start_date' => 'nullable',
             'invite_end_date' => 'nullable',
             'end_date' => 'nullable',
-            'status' => 'actinullableve',
+            'status' => 'nullable',
         ]);
 
         $validatedData['uuid'] = Str::uuid()->toString();
@@ -158,7 +158,21 @@ class CampaignController extends Controller
      */
     public function update(Request $request, Campaign $campaign)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'budget' => 'required',
+            'description' => 'required',
+            'task' => 'nullable',
+            'start_date' => 'nullable',
+            'invite_end_date' => 'nullable',
+            'end_date' => 'nullable',
+            'status' => 'nullable',
+            'type' => 'nullable',
+        ]);
+
+       $campaign->update($validatedData);
+
+        return back()->with('success', 'Campaign Updated Successfully');
     }
 
     /**
