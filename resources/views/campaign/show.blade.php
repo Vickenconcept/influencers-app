@@ -1,5 +1,6 @@
 <x-app-layout>
-    <div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen ">
+
+    <div class="px-3 md:px-10 pb-28 overflow-y-auto h-screen  ">
         <div class="flex justify-between items-center border-b pb-5 mb-5">
             <h1 class="text-2xl font-medium capitalize ">{{ $campaign->title }}</h1>
             <div>
@@ -20,7 +21,7 @@
             <div class="w-full lg:w-1/3 m-1 ">
                 <div class="bg-white shadow-md p-6 rounded-lg ">
                     <h3 class="text-xl font-medium capitalize mb-6">select display type</h3>
-                    <div class="w-full h-96 overflow-y-auto" x-data="{ selectedType: @js($campaign->type)  }">
+                    <div class="w-full h-96 overflow-y-auto" x-data="{ selectedType: @js($campaign->type) }">
                         <label for="type_1"
                             class="rounded-lg shadow-md border mb-6 overflow-hidden block cursor-pointer hover:grayscale-50 hover:shadow-xl"
                             :class="{ 'border-blue-500 border-2': selectedType == '1' }">
@@ -59,7 +60,16 @@
                                     value="{{ $campaign->title }}" />
                             </div>
                             <div class="w-full px-3 mb-6">
+                                <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2"
+                                    htmlFor="Campaign_name">Campaign Description</label>
                                 <textarea textarea rows="4" class="form-control " type="text" name="description" required>{{ $campaign->description }}</textarea>
+                            </div>
+                            <div class="w-full px-3 mb-6">
+                                <label class="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2"
+                                    htmlFor="Campaign_name">Campaign Task</label>
+                                {{-- <textarea textarea rows="4" class="form-control " type="text" name="task" required>{{ $campaign->task }}</textarea> --}}
+
+                                <textarea id="content" name="task" class="w-full" rows="10">{{ $campaign->task }}</textarea>
                             </div>
 
                             <div class="w-full px-3 mb-6">
@@ -83,9 +93,9 @@
                                 </div>
                                 <div class="">
                                     <lable class="text-lg font-semibold">Invitation End Date</lable> <br>
-                                    <input id="inviteEndDate" name="invite_end_date" class="form-control !block !w-full"
-                                        type="text" placeholder="Select a date"
-                                        value="{{ $campaign->invite_end_date }}">
+                                    <input id="inviteEndDate" name="invite_end_date"
+                                        class="form-control !block !w-full" type="text"
+                                        placeholder="Select a date" value="{{ $campaign->invite_end_date }}">
                                 </div>
 
                             </div>
@@ -184,6 +194,41 @@
                         });
                     });
                 });
+            });
+        </script>
+
+        <script>
+            $('#content').summernote({
+            height: 300,
+            minHeight: null,
+            maxHeight: null,
+            focus: true,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                // ['insert', ['link']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen']]
+            ],
+            fontNames: [
+                'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
+                'Helvetica', 'Impact', 'Lucida Grande', 'Tahoma',
+                'Times New Roman', 'Verdana', 'Roboto', 'Open Sans'
+            ],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '24', '30', '36',
+                '48'
+            ],
+            callbacks: {
+               
+                onImageUpload: function(files) {
+                    alert('Local image uploads are disabled. Please use an image URL.');
+                }
+            }
             });
         </script>
     </div>

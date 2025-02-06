@@ -1,4 +1,5 @@
 <x-app-layout>
+    @vite(['resources/js/drivers.js'])
     <div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen">
         <h1 class="text-2xl font-medium  capitalize py-10">hello, this is the dashboard</h1>
 

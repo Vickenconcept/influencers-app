@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Campaign;
 use App\Http\Controllers\Controller;
 use App\Models\Influencer;
+use App\Notifications\CampaignResponseNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class CampaignController extends Controller
@@ -85,10 +87,9 @@ class CampaignController extends Controller
     public function recordResponse(Request $request)
     {
         $token = $request->input('token');
-        $response = $request->input('response'); // 'accepted' or 'declined'
+        $response = $request->input('response'); 
 
         try {
-            // Decrypt the token
             $data = Crypt::decryptString($token);
             parse_str($data, $params);
 
@@ -102,11 +103,14 @@ class CampaignController extends Controller
             $campaign->influencers()->syncWithoutDetaching([
                 $influencer->id => ['task_status' => $response],
             ]);
-            // $campaign->influencers()->updateExistingPivot($influencerId, ['status' => $response]);
-            dd($campaign, $influencer);
+    
+            $user = auth()->user();
+    
+            $user->notify(new CampaignResponseNotification($campaign, $influencer, $response));
 
-            return redirect()->route('campaign.thankyou')->with('status', 'Your response has been recorded.');
+            return view('campaign.thankyou')->with('status', 'Your response has been recorded.');
         } catch (\Exception $e) {
+            return response()->json(['msg' => 'message']);
             return redirect()->route('campaign.error')->with('error', 'Invalid or expired token.');
         }
     }

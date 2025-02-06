@@ -366,7 +366,20 @@
                 </div>
                 <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce'></div>
             </div>
-            <div>Loading....</div>
+            <p class="font-medium mt-3" x-data="{
+                messages: [
+                    'Initializing data fetch...',
+                    'Retrieving influencer details...',
+                    'Processing influencer information...',
+                    'Fetching additional data...',
+                    'Almost done loading the influencers...'
+                ],
+                currentIndex: 0,
+                intervalId: null
+            }" x-init="intervalId = setInterval(() => {
+                currentIndex = (currentIndex + 1) % messages.length;
+            }, 4000);" x-text="messages[currentIndex]">
+            </p>
         </div>
     </div>
 

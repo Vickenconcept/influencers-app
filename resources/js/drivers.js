@@ -1,14 +1,8 @@
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
-// const driverObj = driver();
-// driverObj.highlight({
-//     element: "#some-element",
-//     popover: {
-//         title: "Title",
-//         description: "Description",
-//     },
-// });
+
+console.log('here');
 
 if (!localStorage.getItem("driverTourShown")) {
     const driverObj = driver({
@@ -21,27 +15,27 @@ if (!localStorage.getItem("driverTourShown")) {
         steps: [
             {
                 element: "#facebook",
-                popover: { title: "Title", description: "Description" },
+                popover: { title: "Facebook Influncers", description: "Description" },
             },
             {
                 element: "#instagram",
-                popover: { title: "Title", description: "Description" },
+                popover: { title: "Instagram Influncers", description: "Description" },
             },
             {
                 element: "#youtube",
-                popover: { title: "Title", description: "Description" },
+                popover: { title: "Youtube Influncers", description: "Description" },
             },
             {
                 element: "#tiktok",
-                popover: { title: "Title", description: "Description" },
+                popover: { title: "Tiktok Influncers", description: "Description" },
             },
             {
                 element: "#logo-sidebar",
-                popover: { title: "Title", description: "Description" },
+                popover: { title: "Side Menu", description: "Description" },
             },
             {
                 element: "#profile_avatar",
-                popover: { title: "Title", description: "Description" },
+                popover: { title: "Profile", description: "Description" },
             },
         ],
         onCloseClick: (element, step, options) => {
@@ -61,3 +55,4 @@ if (!localStorage.getItem("driverTourShown")) {
 }
 
 localStorage.removeItem("driverTourShown");
+

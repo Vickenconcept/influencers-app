@@ -36,17 +36,15 @@
                                 $content = json_decode($influencer->content);
                             @endphp
                             <tr class="bg-gray-200" wire:key="influencer-{{ $influencer->id }}">
-                                <td class="p-3">
+                                <td class="p-3 w-60">
                                     <div class="flex align-items-center">
-                                        {{-- <a href="{{ route('influencers.show', $influencer) }}"> --}}
                                         <img class="rounded-full h-12 w-12  object-cover cursor-pointer"
                                             @click="isContentModal = true, influencer_id= @js($influencer->id) , influencer_content = @js($content)"
                                             src="{{ $content->avatar }}"
                                             wire:click="getEveluatedData(@js($influencer->id))" />
-                                        {{-- </a> --}}
                                         <div class="ml-3">
                                             <div class="">
-                                                <a href="{{ route('influencers.show', $influencer) }}"
+                                                <span  class=" object-cover cursor-pointer" @click="isContentModal = true, influencer_id= @js($influencer->id) , influencer_content = @js($content)"
                                                     class="hover:underline">
                                                     {{-- name --}}
                                                     @isset($content->facebookName)
@@ -61,13 +59,13 @@
                                                     @isset($content->youtubeName)
                                                         {{ $content->youtubeName }}
                                                     @endisset
-                                                </a>
+                                                </span>
                                             </div>
                                             <div class="text-gray-800 mt-2">
                                                 @if (json_decode($influencer->emails, true) != null)
                                                     @if (count(json_decode($influencer->emails, true)) > 0)
                                                         <select
-                                                            class="rounded-lg border-0 py-1 w-24 text-sm font-semibold">
+                                                            class="rounded-lg border-0 py-1 w-full text-sm font-semibold">
                                                             <option value="" selected disabled>Emails</option>
                                                             @foreach (json_decode($influencer->emails, true) ?? [] as $email)
                                                                 <option value="{{ $email }}">{{ $email }}
@@ -77,28 +75,21 @@
                                                     @endif
                                                 @else
                                                 @endif
-                                                {{-- <div class="flex">
-                                                <button
-                                                    wire:click="getEmails('{{ $influencer->id }}', '{{ isset($content->youtubeId) ? $content->youtubeId : '' }}')"
-                                                    class="bg-white rounded-lg px-2 py-1 text-sm  focus:ring-2 focus:ring-gray-400 ">Get
-                                                    email</button>
-                                                <button
-                                                    wire:click="checkContactWithAI({{ json_encode($influencer->content, true) }}, '{{ $influencer->id }}')"
-                                                    class="bg-white rounded-lg px-2 py-1 text-sm  focus:ring-2 focus:ring-gray-400 ">Check
-                                                    with AI</button>
-                                            </div> --}}
+                                             
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="flex py-3 space-x-1">
+                                        @if ($influencer->platform != 'facebook')
                                         <button
-                                            wire:click="getEmails('{{ $influencer->id }}', '{{ isset($content->youtubeId) ? $content->youtubeId : '' }}')"
-                                            class="bg-white rounded-lg px-2 py-1 text-xs font-semibold  focus:ring-2 focus:ring-gray-400 ">
-                                            <span wire:target="getEmails" wire:loading.class="opacity-50">Get
-                                                email</span>
-                                            {{-- <span wire:loading wire:target="getEmails">...</span> --}}
-                                        </button>
+                                        wire:click="getEmails('{{ $influencer->id }}', '{{ isset($content->youtubeId) ? $content->youtubeId : '' }}')"
+                                        class="bg-white rounded-lg px-2 py-1 text-xs font-semibold  focus:ring-2 focus:ring-gray-400 ">
+                                        <span wire:target="getEmails" wire:loading.class="opacity-50">Get
+                                            email</span>
+                                        {{-- <span wire:loading wire:target="getEmails">...</span> --}}
+                                    </button>
+                                        @endif
                                         <button
                                             wire:click="checkContactWithAI({{ json_encode($influencer->content, true) }}, '{{ $influencer->id }}')"
                                             class="bg-white rounded-lg px-2 py-1 text-xs font-semibold  focus:ring-2 focus:ring-gray-400 ">

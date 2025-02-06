@@ -63,8 +63,11 @@
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="isVerified" class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
-                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 "> <span class="font-bold">isVerified</span>
+                    <label for="isVerified"
+                        class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
+                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"
+                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
+                        <span class="font-bold">isVerified</span>
                     </label>
                 </div>
             </div>
@@ -390,7 +393,22 @@
                 </div>
                 <div class='h-8 w-8 bg-gray-600 rounded-full animate-bounce'></div>
             </div>
-            <div>Loading....</div>
+            <p class="font-medium mt-3" x-data="{
+                messages: [
+                    'Initializing data fetch...',
+                    'Retrieving influencer details...',
+                    'Processing influencer information...',
+                    'Fetching additional data...',
+                    'Almost done loading the influencers...'
+                ],
+                currentIndex: 0,
+                intervalId: null
+            }" x-init="intervalId = setInterval(() => {
+                currentIndex = (currentIndex + 1) % messages.length;
+            }, 4000);" x-text="messages[currentIndex]">
+            </p>
+
+            
         </div>
     </div>
 

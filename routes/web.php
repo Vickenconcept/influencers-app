@@ -5,6 +5,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignInquiryController;
 use App\Http\Controllers\InfluencerController;
 use App\Http\Controllers\InfluncersGroupController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ProfileController;
@@ -53,6 +54,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', function () {
         return view('dashboard');
     })->name('home');
+
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+    // Mark all notifications as read
+    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
 
     Route::view('profile', 'profile')->name('profile');
     Route::post('profile/name', [ProfileController::class, 'changeName'])->name('changeName');

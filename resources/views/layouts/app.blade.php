@@ -37,7 +37,58 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     
+
+    <style>
+        .note-group-select-from-files {
+            display: none;
+        }
+
+        .note-image-url,
+        .note-video-url {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #029745;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #f8f9fa;
+            color: #373d43;
+        }
+
+        .note-image-url:focus,
+        .note-video-url:focus {
+            border: 1px solid red;
+        }
+
+        .btn-primary {
+            background-color: #029745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #015e2b;
+            border-radius: 5px !important;
+        }
+
+        .btn-primary:disabled {
+            background-color: #c0c0c0;
+            cursor: not-allowed;
+        }
+
+        .note-modal-footer {
+            height: 60px !important;
+        }
+    </style>
 
     @yield('styles')
 

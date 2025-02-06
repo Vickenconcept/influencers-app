@@ -171,26 +171,30 @@ class InfluencerService
         }
 
 
+    
+
         // foreach (['avatar', 'cover'] as $key) {
         //     if (isset($responseData['data'][$platformKey][$key])) {
         //         $imageUrl = $responseData['data'][$platformKey][$key];
 
         //         if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
         //             try {
-        //                 $imageData = file_get_contents($imageUrl);
+        //                 $imageData = @file_get_contents($imageUrl);
 
         //                 if ($imageData !== false) {
         //                     $base64Image = base64_encode($imageData);
-
         //                     $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
         //                 } else {
         //                     Log::warning("Failed to fetch image data for {$key} from {$imageUrl}");
+        //                     $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
         //                 }
         //             } catch (\Exception $e) {
         //                 Log::error("Error fetching image for {$key}: {$e->getMessage()} from {$imageUrl}");
+        //                 $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
         //             }
         //         } else {
         //             Log::warning("Invalid or empty URL for {$key}: {$imageUrl}");
+        //             $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
         //         }
         //     }
         // }
@@ -198,28 +202,35 @@ class InfluencerService
         foreach (['avatar', 'cover'] as $key) {
             if (isset($responseData['data'][$platformKey][$key])) {
                 $imageUrl = $responseData['data'][$platformKey][$key];
-
+        
                 if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
                     try {
                         $imageData = @file_get_contents($imageUrl);
-
+        
                         if ($imageData !== false) {
                             $base64Image = base64_encode($imageData);
                             $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
                         } else {
                             Log::warning("Failed to fetch image data for {$key} from {$imageUrl}");
-                            $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                            // Randomly select a number between 300 and 800 for the fallback URL
+                            $randomSize = rand(300, 800);
+                            $responseData['data'][$platformKey][$key] = "https://i.pravatar.cc/{$randomSize}";
                         }
                     } catch (\Exception $e) {
                         Log::error("Error fetching image for {$key}: {$e->getMessage()} from {$imageUrl}");
-                        $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                        // Randomly select a number between 300 and 800 for the fallback URL
+                        $randomSize = rand(300, 800);
+                        $responseData['data'][$platformKey][$key] = "https://i.pravatar.cc/{$randomSize}";
                     }
                 } else {
                     Log::warning("Invalid or empty URL for {$key}: {$imageUrl}");
-                    $responseData['data'][$platformKey][$key] = 'https://i.pravatar.cc/300';
+                    // Randomly select a number between 300 and 800 for the fallback URL
+                    $randomSize = rand(300, 800);
+                    $responseData['data'][$platformKey][$key] = "https://i.pravatar.cc/{$randomSize}";
                 }
             }
         }
+        
 
 
 
