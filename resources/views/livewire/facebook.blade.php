@@ -1,4 +1,4 @@
-<div class="h-full overflow-y-auto" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
+<div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
 
     <div class="my-6">
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">

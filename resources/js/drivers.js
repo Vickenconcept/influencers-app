@@ -30,6 +30,10 @@ if (!localStorage.getItem("driverTourShown")) {
                 popover: { title: "Tiktok Influncers", description: "Description" },
             },
             {
+                element: "#response_chart",
+                popover: { title: "Response Chart", description: "Description" },
+            },
+            {
                 element: "#logo-sidebar",
                 popover: { title: "Side Menu", description: "Description" },
             },

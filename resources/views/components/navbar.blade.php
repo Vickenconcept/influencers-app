@@ -40,20 +40,19 @@
 
                 <!-- Dropdown menu -->
                 <div id="dropdownNotification"
-                    class="z-20 hidden w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow-sm "
+                    class="z-20 hidden w-full max-w-sm  bg-white divide-y divide-gray-100 rounded-lg shadow-sm  overflow-hidden "
                     aria-labelledby="dropdownNotificationButton">
                     <div class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 ">
                         Notifications
                     </div>
-                    <div class="divide-y divide-gray-100 d">
+                    <div class="divide-y divide-gray-100 h-48 overflow-y-auto">
 
                         @foreach ($notifications as $notification)
                             @if (!$notification->read_at)
                                 <a href="#" class="flex px-4 py-3 hover:bg-gray-100 ">
                                     <div class="shrink-0">
-
                                         <div
-                                            class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-blue-600 border border-white rounded-full dark:border-gray-800">
+                                            class="absolute flex items-center justify-center w-5 h-5 ms-6 -mt-5 bg-blue-600 border border-white rounded-full ">
                                             <svg class="w-2 h-2 text-white" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                 viewBox="0 0 18 18">
@@ -65,11 +64,11 @@
                                         </div>
                                     </div>
                                     <div class="w-full ps-3">
-                                        <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
+                                        <div class="text-gray-500 text-sm mb-1.5 "><span
                                                 class="text-gray-800 font-bold">New message:</span>
                                             {{ $notification->data['message'] }}</div>
                                         <div class="flex justify-between items-center">
-                                            <div class="text-xs text-blue-600 dark:text-blue-500">
+                                            <div class="text-xs text-blue-600 ">
                                                 {{ $notification->created_at->diffForHumans() }}</div>
                                             <form action="{{ route('notifications.markAsRead', $notification->id) }}"
                                                 method="POST" style="display:inline;">
@@ -126,7 +125,7 @@
                         <ul class="py-1" role="none">
                             <li>
                                 <a href="{{ route('home') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  "
                                     role="menuitem">Dashboard</a>
                             </li>
                             <li>
@@ -138,7 +137,7 @@
 
                             <li>
                                 <a href="{{ route('auth.logout') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:hover:text-white"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  "
                                     role="menuitem">Sign out</a>
                             </li>
                         </ul>

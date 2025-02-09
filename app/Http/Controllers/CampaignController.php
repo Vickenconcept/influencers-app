@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use App\Http\Controllers\Controller;
+use App\Models\CampaignInquiry;
 use App\Models\Influencer;
 use App\Notifications\CampaignResponseNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -87,7 +89,7 @@ class CampaignController extends Controller
     public function recordResponse(Request $request)
     {
         $token = $request->input('token');
-        $response = $request->input('response'); 
+        $response = $request->input('response');
 
         try {
             $data = Crypt::decryptString($token);
@@ -101,11 +103,16 @@ class CampaignController extends Controller
 
 
             $campaign->influencers()->syncWithoutDetaching([
-                $influencer->id => ['task_status' => $response],
+                // $influencer->id => ['task_status' => $response],
+                $influencer->id => [
+                    'task_status' => $response,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
             ]);
-    
+
             $user = auth()->user();
-    
+
             $user->notify(new CampaignResponseNotification($campaign, $influencer, $response));
 
             return view('campaign.thankyou')->with('status', 'Your response has been recorded.');
@@ -149,6 +156,11 @@ class CampaignController extends Controller
 
         return back()->with('success', 'Updated successfully');
     }
+
+    public function campaign_response()
+    {
+        return view('campaign.response');
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -174,7 +186,7 @@ class CampaignController extends Controller
             'type' => 'nullable',
         ]);
 
-       $campaign->update($validatedData);
+        $campaign->update($validatedData);
 
         return back()->with('success', 'Campaign Updated Successfully');
     }

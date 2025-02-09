@@ -1,4 +1,4 @@
-<div class="h-full overflow-y-auto" x-data="{ tiktok_influencer_dettail: null, modalIsOpen: false }">
+<div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen" x-data="{ tiktok_influencer_dettail: null, modalIsOpen: false }">
     {{-- Stop trying to control. --}}
 
     <div class="my-6" id="some-element">

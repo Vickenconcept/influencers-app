@@ -9,6 +9,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResellerController;
 use App\Models\Influencer;
 use App\Services\FacebookInfluencerService;
 use App\Services\InfluencerService;
@@ -73,7 +74,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('influencers', InfluencerController::class);
     Route::resource('groups', InfluncersGroupController::class);
     Route::post('campaign/update-name', [CampaignController::class, 'changeName'])->name('changeCampaignName');
+    Route::get('campaign/response', [CampaignController::class, 'campaign_response'])->name('campaigns.response');
     Route::resource('campaigns', CampaignController::class);
+    Route::resource('reseller', ResellerController::class);
     // Route::post('inquiries/{campaignId}/{influencerId}', [CampaignInquiryController::class, 'sendInquiry']);
 });
 

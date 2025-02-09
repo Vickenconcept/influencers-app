@@ -52,4 +52,9 @@ class User extends Authenticatable
     public function campaigns(){
         return $this->hasMany(Campaign::class, 'user_id');
     }
+
+    public function resellers()
+    {
+        return $this->hasMany(Reseller::class);
+    }
 }

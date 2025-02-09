@@ -1,4 +1,4 @@
-<div class="h-full overflow-y-auto" x-data="{ modalIsOpen: false }">
+<div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen" x-data="{ modalIsOpen: false }">
 
     {{-- <div>
         <!-- Dropdown select for predefined ranges -->
