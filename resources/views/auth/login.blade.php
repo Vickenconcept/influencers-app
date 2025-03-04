@@ -1,27 +1,36 @@
  @seo([
-     'title' => 'Trust Convert Io',
-     'description' => 'Review Manager app',
-     'image' => asset('images/trustconvert.png'),
+     'title' => 'FluenceGrid',
+     'description' => 'Influencers Management Hub',
+     'image' => asset('images/login-image.png'),
      'site_name' => config('app.name'),
-     'favicon' => asset('images/trustconvert.png'),
+     'favicon' => asset('images/fav-image.png'),
  ])
  <x-guest-layout>
-     <div
-         class="min-w-screen min-h-screen bg-gradient-to-b from-[#D0E8FF] to-[#bcbafb]  flex items-center justify-center px-5 py-5">
-         <div class=" text-gray-500  w-full " style="max-width:1000px">
-             <div class="md:flex w-full ">
+     <div class="min-w-screen min-h-screen bg-white  flex items-center justify-center px-5 py-5">
+         <div class=" text-gray-500  w-full  " style="max-width:1000px">
 
-                
+
+             <div class="items-end w-[90%] mx-auto  bg-[#CD89FF] rounded-3xl p-20 hidden lg:flex">
+
+             </div>
+             <div class="items-end w-[96%] mx-auto bg-[#525FFD] rounded-3xl p-20 hidden lg:flex lg:-mt-36">
+
+             </div>
+
+             <div class="md:flex items-end 1-full  bg-[#B8FFAB] rounded-3xl px-10 lg:-mt-36">
+                 <div class="w-full md:w-1/2 hidden md:flex">
+                     <img src="{{ asset('images/login-image.png') }}" alt="">
+                 </div>
+
                  <div class="w-full md:w-1/2">
                      <form action="{{ route('auth.login') }}" method="post"
-                         class="w-full py-10 px-5 md:px-10  rounded-2xl bg-slate-200 bg-opacity-50">
+                         class="w-full py-10 px-5 md:px-10  rounded-2xl ">
 
                          @csrf
 
                          <div class="text-center mb-10  ">
                              <div class="flex items-center justify-center mb-5 space-x-1">
-                                 <img src="{{ asset('images/logo.png') }}" alt="">
-                                 <h1 class="font-bold text-xl text-gray-900">TrustConvertio</h1>
+                                 <img src="{{ asset('images/logo.svg') }}" alt="">
                              </div>
                              <h1 class="font-bold text-2xl text-gray-900">Sign in to your Account</h1>
                              <p>Please enter your details</p>
@@ -49,8 +58,9 @@
                                              <i class="mdi mdi-email-outline text-gray-400 text-lg"></i>
                                          </div>
                                          <input type="email"
-                                             class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-[#5c6dd8]"
-                                             placeholder="johnsmith@example.com" name="email" value="{{ old('email') }}">
+                                             class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-black ring-0"
+                                             placeholder="johnsmith@example.com" name="email"
+                                             value="{{ old('email') }}">
                                      </div>
                                  </div>
                              </div>
@@ -66,7 +76,7 @@
                                          </div>
                                          <div class="relative">
                                              <input type="password"
-                                                 class="block w-full py-2 pl-5 pr-10 text-sm text-gray-900 border-2  rounded-lg border-gray-200  outline-none focus:border-[#5c6dd8] "
+                                                 class="block w-full py-2 pl-5 pr-10 text-sm text-gray-900 border-2  rounded-lg border-gray-200  outline-none focus:border-black ring-0 "
                                                  placeholder="Enter password" name="password" id="password" />
 
 
@@ -85,23 +95,30 @@
                              <div class="flex -mx-3">
                                  <div class="w-full px-3 mb-5">
                                      <button
-                                         class="block w-full  mx-auto bg-[#5c6dd8] hover:bg-blue-700 focus:bg-blue-700 text-white rounded-lg px-3 py-3 font-semibold">
-                                         <span id="hiddenText" class="hidden"> <i
-                                                 class='bx bx-loader-alt animate-spin'></i></span>
-                                         <span>LOGIN</span>
+                                         class="block w-full  mx-auto bg-black hover:bg-slate-900 focus:bg-slate-900  text-white rounded-lg px-6 py-3 font-medium flex justify-between transition duration-500 ease-in-out">
+                                         <span>
+                                             <span id="hiddenText" class="hidden">
+                                                 <i class='bx bx-loader-alt animate-spin'></i>
+                                             </span>
+                                             <span>Login</span>
+                                         </span>
+                                         <span>
+                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                 <path stroke-linecap="round" stroke-linejoin="round"
+                                                     d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                                             </svg>
+
+                                         </span>
                                      </button>
                                  </div>
                              </div>
-                             <div class="text-right hover:text-[#5c6dd8] font-semibold underline text-sm">
+                             <div class="text-right hover:text-black ring-0 font-semibold underline text-sm">
                                  <a href="{{ route('password.request') }}">Forgot Password</a>
                              </div>
                          </div>
                      </form>
                  </div>
-
-                 <div class="w-full md:w-1/2">
-                    <img src="{{ asset('images/login-banner.png') }}" alt="">
-                </div>
              </div>
          </div>
      </div>

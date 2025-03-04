@@ -28,8 +28,11 @@ class InfluencerService
         $engageRate = null,
         $country = null,
         $lang = null,
-        $platform = null,
         $hasEmail = null,
+        $hashtags = null,
+        $topic = null,
+        $niche = null,
+        $platform = null,
     ) {
 
         $filters = $this->filtersOption(
@@ -43,6 +46,9 @@ class InfluencerService
             $country,
             $lang,
             $hasEmail,
+            $hashtags,
+            $topic,
+            $niche,
         );
 
 
@@ -91,6 +97,9 @@ class InfluencerService
         $country,
         $lang,
         $hasEmail = null,
+        $hashtags,
+        $topic,
+        $niche,
     ) {
         $cacheKey = "{$platform}_details" . auth()->id();
 
@@ -110,8 +119,11 @@ class InfluencerService
             $engageRate,
             $country,
             $lang,
-            $platform,
             $hasEmail,
+            $hashtags,
+            $topic,
+            $niche,
+            $platform,
         );
 
         $platformIds = $influencers;
@@ -171,7 +183,7 @@ class InfluencerService
         }
 
 
-    
+
 
         // foreach (['avatar', 'cover'] as $key) {
         //     if (isset($responseData['data'][$platformKey][$key])) {
@@ -202,11 +214,11 @@ class InfluencerService
         foreach (['avatar', 'cover'] as $key) {
             if (isset($responseData['data'][$platformKey][$key])) {
                 $imageUrl = $responseData['data'][$platformKey][$key];
-        
+
                 if (!empty($imageUrl) && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
                     try {
                         $imageData = @file_get_contents($imageUrl);
-        
+
                         if ($imageData !== false) {
                             $base64Image = base64_encode($imageData);
                             $responseData['data'][$platformKey][$key] = 'data:image/jpeg;base64,' . $base64Image;
@@ -230,7 +242,7 @@ class InfluencerService
                 }
             }
         }
-        
+
 
 
 
@@ -250,6 +262,9 @@ class InfluencerService
         $country,
         $lang,
         $hasEmail,
+        $hashtags,
+        $topic,
+        $niche,
     ) {
         $filters = [];
 
@@ -312,6 +327,28 @@ class InfluencerService
                 "filterKey" => "hasEmail",
                 "op" => "=",
                 "value" => $hasEmail
+            ];
+        }
+
+        if ($hashtags !== null) {
+            $filters[] = [
+                "filterKey" => "hashtags",
+                "op" => "=",
+                "value" => $hashtags
+            ];
+        }
+        if ($topic !== null) {
+            $filters[] = [
+                "filterKey" => "topic",
+                "op" => "=",
+                "value" => $topic
+            ];
+        }
+        if ($niche !== null) {
+            $filters[] = [
+                "filterKey" => "niche",
+                "op" => "=",
+                "value" => $niche
             ];
         }
 

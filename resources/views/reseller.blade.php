@@ -1,5 +1,8 @@
 <x-app-layout>
-    <div x-data="{ openModal: false }" class="px-3 md:px-10 pb-20 overflow-y-auto h-screen">
+    @section('title')
+    {{ "reseller" }}
+@endsection
+    <div x-data="{ openModal: false }" class="px-3 pb-20 overflow-y-auto h-screen">
         <div class=" flex justify-between">
             <div class=" flex space-x-1 items-baseline">
                 <div>

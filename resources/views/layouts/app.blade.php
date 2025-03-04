@@ -8,11 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @seo([
-        'title' => 'Influence',
-        'description' => 'Review Manager app',
-        'image' => asset('images/trustconvert.png'),
+        'title' => 'FluenceGrid',
+        'description' => 'Influencers Management Hub',
+        'image' => asset('images/login-image.png'),
         'site_name' => config('app.name'),
-        'favicon' => asset('favicon.ico'),
+        'favicon' => asset('images/fav-image.png'),
     ])
 
     <title>Influence</title>
@@ -34,8 +34,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.46.0/dist/apexcharts.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
@@ -109,7 +109,8 @@
         <x-navbar />
         <x-sidebar />
 
-        <div class="h-full sm:ml-64 bg-gray-100 pt-20 overflow-y-hidden">
+        <div class="h-full sm:ml-64 bg-slate-200 pt-20 overflow-y-hidden">
+        {{-- <div class="h-full sm:ml-64 bg-[#F0F3F7] pt-20 overflow-y-hidden"> --}}
             {{ $slot }}
         </div>
     </div>

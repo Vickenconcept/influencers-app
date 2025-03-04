@@ -38,8 +38,16 @@ if (!localStorage.getItem("driverTourShown")) {
                 popover: { title: "Side Menu", description: "Description" },
             },
             {
+                element: "#notification_bell",
+                popover: { title: "Notification", description: "Description" },
+            },
+            {
                 element: "#profile_avatar",
                 popover: { title: "Profile", description: "Description" },
+            },
+            {
+                element: "#start_search",
+                popover: { title: "Start", description: "Description" },
             },
         ],
         onCloseClick: (element, step, options) => {
@@ -50,13 +58,20 @@ if (!localStorage.getItem("driverTourShown")) {
             if (!driverObj.hasNextStep() || confirm("Are you sure?")) {
                 localStorage.setItem("driverTourShown", "true");
                 driverObj.destroy();
+                // window.scrollTo({ top: 0, behavior: "smooth" });
             }
         },
+        onDestroyed: () => {
+            setTimeout(() => {
+                location.reload();
+            }, 100); 
+        }
+        
     });
 
     // Start the tour
     driverObj.drive();
 }
 
-localStorage.removeItem("driverTourShown");
+// localStorage.removeItem("driverTourShown");
 

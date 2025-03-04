@@ -1,6 +1,9 @@
 <x-app-layout>
+    @section('title')
+        {{ $campaign->title }}
+    @endsection
 
-    <div class="px-3 md:px-10 pb-28 overflow-y-auto h-screen  ">
+    <div class="px-3 pb-28 overflow-y-auto h-screen  ">
         <div class="flex justify-between items-center border-b pb-5 mb-5">
             <h1 class="text-2xl font-medium capitalize ">{{ $campaign->title }}</h1>
             <div>
@@ -199,36 +202,36 @@
 
         <script>
             $('#content').summernote({
-            height: 300,
-            minHeight: null,
-            maxHeight: null,
-            focus: true,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['fontname', ['fontname']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                // ['insert', ['link']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen']]
-            ],
-            fontNames: [
-                'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
-                'Helvetica', 'Impact', 'Lucida Grande', 'Tahoma',
-                'Times New Roman', 'Verdana', 'Roboto', 'Open Sans'
-            ],
-            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '24', '30', '36',
-                '48'
-            ],
-            callbacks: {
-               
-                onImageUpload: function(files) {
-                    alert('Local image uploads are disabled. Please use an image URL.');
+                height: 300,
+                minHeight: null,
+                maxHeight: null,
+                focus: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    // ['insert', ['link']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen']]
+                ],
+                fontNames: [
+                    'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
+                    'Helvetica', 'Impact', 'Lucida Grande', 'Tahoma',
+                    'Times New Roman', 'Verdana', 'Roboto', 'Open Sans'
+                ],
+                fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '24', '30', '36',
+                    '48'
+                ],
+                callbacks: {
+
+                    onImageUpload: function(files) {
+                        alert('Local image uploads are disabled. Please use an image URL.');
+                    }
                 }
-            }
             });
         </script>
     </div>

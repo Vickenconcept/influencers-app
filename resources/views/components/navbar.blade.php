@@ -1,4 +1,4 @@
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 ">
+<nav class="fixed top-0 z-40 w-full bg-slate-200 border-b border-slate-300 ">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
@@ -14,26 +14,30 @@
                     </svg>
                 </button>
                 <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
-                    <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap ">Flowbite</span>
+                    <img src="{{ asset('images/logo.svg') }}" class="h-8 me-3" alt="FluenceGrid Logo" />
                 </a>
+                <div>
+                    <h2 class="hidden md:flex text-2xl font-medium ml-5 capitalize">
+                        @yield('title')
+                    </h2>
+                </div>
             </div>
             <div class="flex items-center space-x-5">
                 @php
                     $notifications = auth()->user()->notifications;
                 @endphp
 
-                <button id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification"
-                    class="relative inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none"
+                <button id="notification_bell" data-dropdown-toggle="dropdownNotification" 
+                    class="relative inline-flex items-center text-sm font-medium text-center text-transparent hover:text-gray-300 focus:outline-none bg-white p-2 rounded-md"
                     type="button">
-                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="gray"
                         viewBox="0 0 14 20">
                         <path
                             d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
                     </svg>
 
                     <div
-                        class="absolute block w-5 h-5 bg-red-500 border-2 border-white text-white text-xs rounded-full -top-0.5 start-2.5 ">
+                        class="absolute block w-5 h-5 bg-red-500 border-2 border-white text-white text-xs rounded-full -top-0.5 right-0  ">
                         {{ auth()->user()->unreadNotifications->count() }}
                     </div>
                 </button>
@@ -41,7 +45,7 @@
                 <!-- Dropdown menu -->
                 <div id="dropdownNotification"
                     class="z-20 hidden w-full max-w-sm  bg-white divide-y divide-gray-100 rounded-lg shadow-sm  overflow-hidden "
-                    aria-labelledby="dropdownNotificationButton">
+                    aria-labelledby="notification_bell">
                     <div class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 ">
                         Notifications
                     </div>
@@ -103,14 +107,17 @@
                 </div>
 
                 <div class="flex items-center ms-3">
-                    <div>
+                    <div class="flex items-center space-x-2"  aria-expanded="false" data-dropdown-toggle="dropdown-user" id="profile_avatar">
                         <button type="button" id="profile_avatar"
-                            class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 "
-                            aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            class="flex text-sm bg-gray-800 rounded-md focus:ring-4 focus:ring-gray-300 ">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 rounded-full"
+                            <img class="w-10 h-10 rounded-md"
                                 src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                         </button>
+                        <div class="bg-white rounded-md px-3 py-1 w-48 truncate cursor-pointer" >
+                            <p class="text-sm font-semibold capitalize"> {{ auth()->user()->name }}</p>
+                            <p class="text-xs">{{ auth()->user()->email }}</p>
+                        </div>
                     </div>
                     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow "
                         id="dropdown-user">

@@ -1,25 +1,28 @@
 <x-app-layout>
+    @section('title')
+        {{ 'profile' }}
+    @endsection
     <div class="  space-y-8 h-full">
 
-        <div class="py-5 border-b px-3 md:px-10 flex space-x-5 items-center">
+        <div class="py-5 border-b px-3 flex space-x-5 items-center">
             <div>
                 <h3 class=" font-bold">My Profile</h3>
             </div>
             <span class="text-xs">Manage your account</span>
         </div>
 
-        <div class="px-3 md:px-10">
+        <div class="px-3">
             <form action="{{ route('changeName') }}" method="POST" class=" space-y-4 ">
                 @csrf
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2  w-full gap-5">
                     <div>
                         <div class="flex items-center justify-between">
                             <label for="name" class="input-label">Name</label>
                         </div>
                         <div class="mt-2">
-                            <input id="name" name="name" type="name" autocomplete="off"
-                                class="form-control" value="{{ auth()->user()->name }}">
+                            <input id="name" name="name" type="name" autocomplete="off" class="form-control"
+                                value="{{ auth()->user()->name }}">
                             @error('name')
                                 <span class="text-xs text-red-400">{{ $message }}</span>
                             @enderror
@@ -31,8 +34,8 @@
                             <label for="email" class="input-label">Email</label>
                         </div>
                         <div class="mt-2">
-                            <input id="email" name="email" type="email" autocomplete="off"
-                                class="form-control" value="{{ auth()->user()->email }}">
+                            <input id="email" name="email" type="email" autocomplete="off" class="form-control"
+                                value="{{ auth()->user()->email }}">
                             @error('email')
                                 <span class="text-xs text-red-400">{{ $message }}</span>
                             @enderror
@@ -41,24 +44,25 @@
                 </div>
 
 
-                <div class="mt-5" >
-                    <button type="submit" class="bg-cyan-950 hover:bg-cyan-800 hover:shadow px-4 py-1.5 font-semibold text-blue-50 rounded-md flex items-center">
+                <div class="mt-5">
+                    <button type="submit"
+                        class="bg-cyan-950 hover:bg-cyan-800 hover:shadow px-4 py-1.5 font-semibold text-blue-50 rounded-md flex items-center">
                         <i class='bx bx-save mr-2'></i>
                         save
                     </button>
                 </div>
 
-               
+
             </form>
         </div>
 
 
-        <div class="space-y-5 px-3 md:px-10">
+        <div class="space-y-5 px-3">
             <hr>
             <h1 class=" font-semibold">Changing your password will log you out of every device.</h1>
             <form action="{{ route('changePassword') }}" method="POSt" class=" space-y-4 ">
                 @csrf
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2  w-full gap-5">
                     <div>
                         <div class="flex items-center justify-between">
@@ -86,17 +90,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-5" >
-                    <button type="submit" class="bg-cyan-950 hover:bg-cyan-800 hover:shadow px-4 py-1.5 font-semibold text-blue-50 rounded-md flex items-center ">
+                <div class="mt-5">
+                    <button type="submit"
+                        class="bg-cyan-950 hover:bg-cyan-800 hover:shadow px-4 py-1.5 font-semibold text-blue-50 rounded-md flex items-center ">
                         <i class='bx bx-save mr-2'></i>
                         save
                     </button>
                 </div>
 
-               
+
             </form>
         </div>
-       
+
     </div>
 
 

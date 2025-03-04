@@ -1,4 +1,8 @@
-    <div x-data="{ openModal: false, isContentModal: false, influencer_id: null, influencer_content: null }" class="px-3 md:px-10 pb-20 overflow-y-auto h-screen">
+@section('title')
+{{ $group->name  }}
+@endsection
+    
+    <div x-data="{ openModal: false, isContentModal: false, influencer_id: null, influencer_content: null }" class="px-3 pb-20 overflow-y-auto h-screen">
         <div class="flex justify-between items-center pb-10">
 
             <h3 class="capitalize font-bold text-3xl ">{{ $group->name }}</h3>

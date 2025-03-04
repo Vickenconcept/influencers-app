@@ -22,7 +22,10 @@ class Youtube extends Component
         $engageRate = null,
         $country = null,
         $hasEmail = null,
-        $lang = null;
+        $lang = null,
+        $hashtags = null,
+        $topic = null,
+        $niche = null;
 
     public $selectedGroups = [], $selectInfluencer;
     public $groups, $name, $description;
@@ -65,6 +68,9 @@ class Youtube extends Component
             $this->country,
             $this->lang,
             $this->hasEmail,
+             strtolower($this->hashtags),
+            $this->topic,
+            $this->niche,
 
         );
         

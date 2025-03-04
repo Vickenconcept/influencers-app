@@ -1,11 +1,11 @@
-<div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen">
+<div class="px-3 pb-20 overflow-y-auto h-screen">
 
     <div class="py-5 border-b flex flex-col md:flex-row justify-between items-center ">
         <div>
             <h3 class=" font-medium text-2xl">Response</h3>
         </div>
 
-        <div class="flex flex-col md:items-center md:flex-row px-3 md:px-10   md:space-y-0 md:space-x-2  w-1/3 ">
+        <div class="flex flex-col md:items-center md:flex-row px-3   md:space-y-0 md:space-x-2  w-1/3 ">
             <select id="countries1" wire:model.live="status" class="form-control ">
                 <option value="all">All</option>
                 <option value="accepted">Accepted</option>

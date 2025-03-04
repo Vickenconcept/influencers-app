@@ -22,7 +22,10 @@ class Facebook extends Component
         $engageRate = null,
         $country = null,
         $lang = null,
-        $hasEmail = null;
+        $hasEmail = null,
+        $hashtags = null,
+        $topic = null,
+        $niche = null;
 
     public $selectedGroups = [], $selectInfluencer;
     public $groups, $name, $description;
@@ -64,7 +67,9 @@ class Facebook extends Component
             $this->country,
             $this->lang,
             $this->hasEmail,
-
+             strtolower($this->hashtags),
+            $this->topic,
+            $this->niche,
         );
         
         // dd($this->details);

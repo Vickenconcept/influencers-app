@@ -21,7 +21,11 @@ class Instagram extends Component
         $followers = 10000,
         $engageRate = null,
         $country = null,
-        $lang = null;
+        $lang = null,
+        $hasEmail = null,
+        $hashtags = null,
+        $topic = null,
+        $niche = null;
 
     public $selectedGroups = [], $selectInfluencer;
     public $groups, $name, $description;
@@ -62,18 +66,23 @@ class Instagram extends Component
             $this->engageRate,
             $this->country,
             $this->lang,
+            $this->hasEmail,
+            strtolower($this->hashtags),
+            $this->topic,
+            $this->niche,
 
         );
-        
+
         // dd($this->details);
         return $this->details;
     }
 
-    public function resetData(){
+    public function resetData()
+    {
 
         Cache::forget("{$this->platform}_details" . auth()->id());
         $this->dispatch('refreshPage');
-        return ;
+        return;
     }
 
 

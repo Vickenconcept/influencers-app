@@ -21,7 +21,11 @@ class Tiktok extends Component
         $followers = 10000,
         $engageRate = null,
         $country = null,
-        $lang = null;
+        $hasEmail = null,
+        $lang = null,
+        $hashtags = null,
+        $topic = null,
+        $niche = null;
 
     public $selectedGroups = [], $selectInfluencer;
     public $groups, $name, $description;
@@ -62,6 +66,10 @@ class Tiktok extends Component
             $this->engageRate,
             $this->country,
             $this->lang,
+            $this->hasEmail,
+             strtolower($this->hashtags),
+            $this->topic,
+            $this->niche,
 
         );
         

@@ -1,10 +1,13 @@
+@section('title')
+    {{ 'Campaign' }}
+@endsection
 <div class="  space-y-8 overflow-y-auto h-screen pb-28" x-data="{ campaign: null, createCampaign: false, editCampaign: false }">
-    <div class="py-5 border-b px-3 md:px-10 flex flex-col md:flex-row justify-between items-center ">
+    <div class="py-5 border-b px-3 flex flex-col md:flex-row justify-between items-center ">
         <div>
             <h3 class=" font-medium text-2xl">Campaigns</h3>
         </div>
 
-        <div class="flex flex-col md:items-center md:flex-row px-3 md:px-10   md:space-y-0 md:space-x-2  w-full ">
+        <div class="flex flex-col md:items-center md:flex-row px-3   md:space-y-0 md:space-x-2  w-full ">
             <select id="countries1" wire:model.live="sortOrder" class="form-control ">
                 <option value="latest">Latest</option>
                 <option value="oldest">Oldest</option>
@@ -77,8 +80,8 @@
                         </div>
                         <div class="">
                             <lable class="text-lg font-semibold">Invitation End Date</lable> <br>
-                            <input id="inviteEndDate" name="invite_end_date" class="form-control !block !w-full" type="text"
-                                placeholder="Select a date">
+                            <input id="inviteEndDate" name="invite_end_date" class="form-control !block !w-full"
+                                type="text" placeholder="Select a date">
                         </div>
 
                     </div>
@@ -118,7 +121,7 @@
         </div>
     </div>
 
-    <section class="px-3 md:px-10 ">
+    <section class="px-3 ">
         <!-- List Group -->
         <ul class="mt-3 flex flex-col space-y-0.5 overflow-y-auto pb-10">
             @forelse ($campaigns as $campaign)
@@ -158,13 +161,14 @@
                             </div>
                         </a>
                         <div class="w-full md:w-1/4 flex justify-center items-center md:justify-end space-x-3 py-3 ">
-                            <button @click="editCampaign = true , campaign =@js($campaign)" type="button"
+                            <button @click="editCampaign = true , campaign =@js($campaign)"
+                                type="button"
                                 class="bg-green-100 px-4 py-1.5 rounded-lg text-md font-semibold flex items-center text-green-500 hover:bg-green-500 hover:text-green-100 transition-all duration-300">
                                 <i class='bx bxs-edit text-2xl mr-1'></i>
                             </button>
                             <button data-item-id="{{ $campaign->id }}" type="button"
                                 class="delete-btn bg-red-100 px-4 py-1.5 rounded-lg text-md font-semibold flex items-center text-red-500 hover:bg-red-500 hover:text-red-100 transition-all duration-300">
-                                <i class='bx bxs-trash text-2xl mr-1'></i> 
+                                <i class='bx bxs-trash text-2xl mr-1'></i>
                             </button>
                             <a href="{{ route('campaigns.show', ['campaign' => $campaign->uuid]) }}">
                                 <button type="button"
@@ -197,14 +201,12 @@
             // Configuration options for Flatpickr
             // You can customize the appearance and behavior here
         });
-        flatpickr("#endDate", {
-        });
+        flatpickr("#endDate", {});
 
-        flatpickr("#inviteEndDate", {
-        });
+        flatpickr("#inviteEndDate", {});
     </script>
 
-    
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -232,7 +234,7 @@
                                     method: 'DELETE',
                                     headers: {
                                         'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                     }
                                 })
                                 .then(response => {

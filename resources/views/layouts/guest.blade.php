@@ -8,11 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @seo([
-        'title' => 'Influence',
-        'description' => 'Review Manager app',
-        'image' => asset('images/trustconvert.png'),
+        'title' => 'FluenceGrid',
+        'description' => 'Influencers Management Hub',
+        'image' => asset('images/login-image.png'),
         'site_name' => config('app.name'),
-        'favicon' => asset('favicon.ico'),
+        'favicon' => asset('images/fav-image.png'),
     ])
 
     <title>Influence</title>

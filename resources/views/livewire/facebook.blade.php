@@ -1,4 +1,81 @@
-<div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
+<div class="px-3 pb-20 overflow-y-auto h-screen" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
+
+    <div class="flex items-center space-x-3 text-sm">
+        <p class="bg-white px-5 p-2 rounded-md text-slate-500 font-medium ">Apply Filters</p>
+        <p class="text-slate-500 capitalize">Use filters to further refine search</p>
+    </div>
+
+    <div class="my-6">
+        <div class="rounded-3xl border border-gray-200 bg-white/30 p-6 shadow-sm">
+            <div class="mt-8 grid grid-cols-1 gap-6 grid-cols-3 md:grid-cols-3 lg:grid-cols-5">
+                <div class="flex flex-col">
+                    <label for="name" class="text-slate-800 text-sm font-medium">Name</label>
+                    <!-- Dropdown select for predefined ranges -->
+                    <select wire:model="followersRange" wire:change="getFiltersByRange()"
+                        class="form-control">
+                        <option value="0-10000">Less than 10k</option>
+                        <option value="10000-50000">10k - 50k</option>
+                        <option value="50000-500000">50k - 500k</option>
+                        <option value="500000-1000000">500k - 1M</option>
+                        <option value="1000000+">1M+</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="minRange" class="text-slate-800 text-sm font-medium">Min Followers:</label>
+
+                    <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers"
+                        min="0"
+                        class="form-control">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="maxRange" class="text-slate-800 text-sm font-medium">Max Followers:</label>
+                    <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers"
+                        min="0"
+                        class="form-control">
+                </div>
+
+                <div class="flex flex-col">
+                    <span  class="text-sm font-medium text-transparent">Verified Accounts</span>
+                    <label for="isVerified"
+                        class="form-control">
+                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"
+                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
+                        <span class="">Verified Accounts</span>
+                    </label>
+                </div>
+
+                <div class="flex flex-col">
+                    <span  class="text-sm font-medium text-transparent">Email Accounts</span>
+                    <label for="hasEmail"
+                        class="form-control">
+                        <input type="checkbox" wire:model="hasEmail" name="hasEmail" id="hasEmail"
+                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
+                        <span class="">Email Accounts</span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="mt-10 grid w-full grid-cols-2 justify-center space-x-4 md:flex">
+                <button wire:click="getInfluencer()"
+                    class="active:scale-95 rounded-lg bg-gradient-to-r from-[#525FFD] via-[#CD89FF] to-[#B5FFAB] px-6 py-2 text-white outline-none focus:ring hover:opacity-90 flex items-center space-x-2">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                          </svg>
+                          
+                    </span>
+                    <span>Search</span>
+                </button>
+                <button wire:click="resetData()"
+                    class="active:scale-95 rounded-lg  px-8 py-2 text-gray-600 outline-none focus:ring hover:opacity-90 border border-slate-600 ">Reset</button>
+            </div>
+        </div>
+    </div>
+
+
 
     <div class="my-6">
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">

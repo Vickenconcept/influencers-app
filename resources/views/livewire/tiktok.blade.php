@@ -1,4 +1,4 @@
-<div class="px-3 md:px-10 pb-20 overflow-y-auto h-screen" x-data="{ tiktok_influencer_dettail: null, modalIsOpen: false }">
+<div class="px-3 pb-20 overflow-y-auto h-screen" x-data="{ tiktok_influencer_dettail: null, modalIsOpen: false }">
     {{-- Stop trying to control. --}}
 
     <div class="my-6" id="some-element">
@@ -69,6 +69,13 @@
                             class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
                         <span class="font-bold">isVerified</span>
                     </label>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="hashtags"
+                        class="text-stone-600 text-sm font-medium">hashtags:
+                    </label>
+                    <input type="text" id="hashtags" class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" wire:model="hashtags" placeholder="Enter hashtags">
                 </div>
             </div>
 
