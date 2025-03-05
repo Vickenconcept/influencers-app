@@ -1,9 +1,10 @@
 <x-guest-layout>
-    <div class="flex justify-center items-center h-screen bg-cyan-950 ">
+    <div class="flex justify-center items-center h-screen bg-gradient-to-b from-[#D0E8FF] to-[#B5FFAB] ">
         <div class="w-[40%] mx-auto">
             <form method="POST" action="{{ route('password.update') }}"
-                class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                class="shadow-md rounded-2xl bg-slate-200 bg-opacity-50 px-8 pt-6 pb-8 mb-4">
                 @csrf
+                <h4 class="text-3xl text-center">Reset Password</h4>
                 <div class="mb-4">
                     @if ($errors->any())
                         <div class="bg-red-200 text-red-500 p-4">
@@ -52,7 +53,7 @@
                             value="{{ $token }}">
                     </div>
                     <div class="flex items-center justify-end mt-4">
-                        <button type="submit" class="bg-cyan-950 hover:bg-cyan-800 hover:shadow px-4 py-1.5 font-semibold text-blue-50 rounded-md w-full">
+                        <button type="submit" class="bg-black hover:bg-slate-900 hover:shadow px-4 py-1.5 font-semibold text-blue-50 rounded-md w-full transition duration-500 ease-in-out">
                             <span id="hiddenText" class="hidden"> <i class='bx bx-loader-alt animate-spin'></i></span>
                             <span>RESET</span>
                         </button>

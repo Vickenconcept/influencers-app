@@ -1,19 +1,29 @@
-<div class="px-3 pb-20 overflow-y-auto h-screen">
+<div class="px-3 pb-32 overflow-y-auto h-screen" x-data="{ group: null, editGroup: false }">
+    
     <div>
-        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:justify-between my-10">
-
-            <div class="">
-                <select wire:model.live="sortOrder" class="form-control md:!w-[110px] grow">
+        <div class="py-5 border-b md:px-3 flex flex-col md:flex-row justify-between items-center mb-8 space-y-2 md:space-y-0 ">
+            <div class="w-full md:w-auto">
+                <select wire:model.live="sortOrder"class="form-control ">
                     <option value="latest">Latest</option>
                     <option value="oldest">Oldest</option>
                 </select>
-
             </div>
-            <div class="flex items-center space-x-3">
-                <div>
-                    <input type="text" wire:model.live="search" id="name" class="form-control md:!w-[310px] grow"
-                        placeholder="Enter Group name" required />
+    
+            <div class="flex flex-col md:items-center md:flex-row md:px-3   md:space-y-0 md:space-x-2  w-full ">
+    
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
+                    <input type="search" id="search" wire:model.live="search"
+                        class="block w-full p-3 ps-10 text-sm text-gray-900 border-0 md:border border-gray-300 rounded-lg md:bg-gray-50 focus:ring-[#0F1523] focus:border-[#0F1523]  "
+                        placeholder="Search">
                 </div>
+    
                 <div>
                     <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                         class="btn !whitespace-nowrap" type="button">
@@ -21,7 +31,8 @@
                     </button>
                 </div>
             </div>
-
+        </div>
+        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:justify-between">
 
             <!-- Main modal -->
             <div id="authentication-modal" tabindex="-1" aria-hidden="true"
@@ -61,8 +72,7 @@
                                     <textarea name="description" id="description" class="form-control"></textarea>
                                 </div>
 
-                                <button type="submit"
-                                    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Create
+                                <button type="submit" class="btn ">Create
                                     Group</button>
 
                             </form>
@@ -74,7 +84,7 @@
         </div>
         <ul class="w-full  divide-gray-200  grid sm:grid-cols-3 gap-5">
             @forelse ($groups as $group)
-                <div class="p-4 bg-gray-50  rounded-2xl shadow-sm space-y-14 border-2 hover:!border-blue-400 ">
+                <div class="p-4 bg-gray-50  rounded-2xl shadow-sm space-y-14 border-2 hover:!border-[#0F1523] ">
                     <div class="flex justify-between">
                         <span class="  rounded-full">
                             {{-- {{ $group->image }} --}}
@@ -88,6 +98,12 @@
                         </span>
 
                         <div class=" space-x-4 items-center flex ">
+                            <button type="button" @click="editGroup = true , group =@js($group)"
+                                class=" bg-gray-200 hover:bg-green-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
+                                <i
+                                    class="bx bx-edit font-medium group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
+
+                            </button>
                             <button type="button" data-item-id="{{ $group->id }}"
                                 class="delete-btn bg-gray-200 hover:bg-red-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
                                 <i
@@ -95,11 +111,14 @@
 
                             </button>
                             <a href="{{ route('groups.show', ['group' => $group->id]) }}"
-                                class="bg-gray-200 hover:bg-blue-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
-                                <i
-                                    class="bx bx-show font-medium group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
-                                <span
-                                    class="group-hover:text-white delay-100 transition-all duration-500 ease-in-out">Preview</span>
+                                class="bg-gray-200 hover:bg-[#0F1523] group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6 group-hover:text-white">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                </svg>
+                                {{-- <i
+                                    class="bx bx-show font-medium group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i> --}}
                             </a>
 
                         </div>
@@ -116,7 +135,8 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-3 bg-gray-50 text-gray-500 py-8 flex flex-col justify-center items-center rounded ">
+                <div
+                    class="col-span-3 bg-gray-50 text-gray-500 py-8 flex flex-col justify-center items-center rounded ">
                     <span>No Data Yet.</span>
                     <p><i class='bx bxs-folder-open text-4xl'></i></p>
                 </div>
@@ -126,6 +146,33 @@
                 {{ $groups->links() }}
             </div>
         </ul>
+
+
+        {{-- edit campaign --}}
+        <div class="fixed items-center justify-center  flex -top-10 left-0 mx-auto w-full h-full bg-gray-600 bg-opacity-30 z-50 transition duration-1000 ease-in-out"
+            x-show="editGroup" style="display: none;">
+            <div @click.away="editGroup = false"
+                class="bg-white w-[90%] md:w-[50%]  shadow-inner  border rounded-2xl overflow-auto  py-6 px-8 transition-all relative duration-700">
+                <div class=" h-full ">
+
+                    <div class="font-bold text-xl">Edit Group Name</div>
+                    <form action="{{ route('changeGroupName') }}" method="post" class="my-10 space-y-3">
+                        @csrf
+
+                        <div>
+                            <input class="form-control" id="" type="text" name="name"
+                                x-model="group.name" placeholder="Group name">
+                            <input class="form-control " id="" type="hidden" name="id"
+                                x-model="group.id" placeholder="">
+                        </div>
+
+                        <button class="btn" type="submit">
+                            <span>Edit Group</span>
+
+                        </button>
+                </div>
+            </div>
+        </div>
     </div>
 
 

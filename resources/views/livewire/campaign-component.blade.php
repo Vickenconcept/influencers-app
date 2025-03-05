@@ -2,16 +2,15 @@
     {{ 'Campaign' }}
 @endsection
 <div class="  space-y-8 overflow-y-auto h-screen pb-28" x-data="{ campaign: null, createCampaign: false, editCampaign: false }">
-    <div class="py-5 border-b px-3 flex flex-col md:flex-row justify-between items-center ">
-        <div>
-            <h3 class=" font-medium text-2xl">Campaigns</h3>
-        </div>
-
-        <div class="flex flex-col md:items-center md:flex-row px-3   md:space-y-0 md:space-x-2  w-full ">
+    <div class="py-5 border-b px-3 flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0 ">
+        <div class="w-full md:w-auto">
             <select id="countries1" wire:model.live="sortOrder" class="form-control ">
                 <option value="latest">Latest</option>
                 <option value="oldest">Oldest</option>
             </select>
+        </div>
+
+        <div class="flex flex-col md:items-center md:flex-row md:px-3   md:space-y-0 md:space-x-2  w-full ">
 
             <div class="relative w-full">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -22,7 +21,7 @@
                     </svg>
                 </div>
                 <input type="search" id="search" wire:model.live="search"
-                    class="block w-full p-3 ps-10 text-sm text-gray-900 border-0 md:border border-gray-300 rounded-lg md:bg-gray-50 focus:ring-orange-500 focus:border-orange-500  "
+                    class="block w-full p-3 ps-10 text-sm text-gray-900 border-0 md:border border-gray-300 rounded-lg md:bg-gray-50 focus:ring-[#0F1523] focus:border-[#0F1523]  "
                     placeholder="Search">
             </div>
 
@@ -100,7 +99,7 @@
             class="bg-white w-[90%] md:w-[50%]  shadow-inner  border rounded-2xl overflow-auto  py-6 px-8 transition-all relative duration-700">
             <div class=" h-full ">
 
-                <div class="font-bold text-xl">Change Campaign Name</div>
+                <div class="font-bold text-xl">Edit Campaign Name</div>
                 <form action="{{ route('changeCampaignName') }}" method="post" class="my-10 space-y-3">
                     @csrf
 
@@ -112,9 +111,9 @@
                     </div>
 
                     <button
-                        class="bg-orange-500 hover:bg-orange-600 hover:shadow px-4 py-1.5 font-semibold text-orange-50 rounded-md  w-full"
+                        class="btn"
                         type="submit">
-                        <span>Edit</span>
+                        <span>Edit Campaign</span>
 
                     </button>
             </div>

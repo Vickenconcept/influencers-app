@@ -13,11 +13,11 @@
                         </path>
                     </svg>
                 </button>
-                <a href="https://flowbite.com" class="flex ms-2 md:me-24">
+                <a href="https://flowbite.com" class="flex ms-2 md:me-24 hidden md:flex">
                     <img src="{{ asset('images/logo.svg') }}" class="h-8 me-3" alt="FluenceGrid Logo" />
                 </a>
                 <div>
-                    <h2 class="hidden md:flex text-2xl font-medium ml-5 capitalize">
+                    <h2 class="text-sm  md:text-2xl font-medium ml-5 capitalize">
                         @yield('title')
                     </h2>
                 </div>
@@ -114,7 +114,7 @@
                             <img class="w-10 h-10 rounded-md"
                                 src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
                         </button>
-                        <div class="bg-white rounded-md px-3 py-1 w-48 truncate cursor-pointer" >
+                        <div class="bg-white rounded-md px-3 py-1 w-48 truncate cursor-pointer hidden md:block" >
                             <p class="text-sm font-semibold capitalize"> {{ auth()->user()->name }}</p>
                             <p class="text-xs">{{ auth()->user()->email }}</p>
                         </div>

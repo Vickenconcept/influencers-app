@@ -50,6 +50,19 @@ class InfluncersGroupController extends Controller
         return view('group.show', compact('group'));
     }
 
+    public function changeName(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $group = InfluncersGroup::where('id', $request->input('id'))->firstOrFail();
+        $group->name = $request->input('name');
+        $group->update();
+
+        return back()->with('success', 'Updated successfully');
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

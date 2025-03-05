@@ -1,4 +1,4 @@
-<div class="px-3 pb-20 overflow-y-auto h-screen">
+<div class="px-3 pb-32 overflow-y-auto h-screen">
 
     <div class="py-5 border-b flex flex-col md:flex-row justify-between items-center ">
         <div>
@@ -22,13 +22,13 @@
                     <th scope="col" class="px-6 py-3 bg-gray-50 ">
                         Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 bg-gray-100">
                         Email
                     </th>
                     <th scope="col" class="px-6 py-3 bg-gray-50 ">
                         Status
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 bg-gray-100">
 
                     </th>
                 </tr>
@@ -56,16 +56,20 @@
                                 {{ $content->youtubeName }}
                             @endisset
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 bg-gray-100">
                             {{ $emailsList }}
                         </td>
                         <td class="px-6 py-4 bg-gray-50 ">
                             {{ $response->task_status }}
                         </td>
-                        <td class="px-6 py-4" wire:ignore>
-
-                            <button type="button" wire:click="deletResponse({{ $response->id }})"> <i
+                        <td class="px-6 py-4 bg-gray-100" wire:ignore>
+                            {{-- <button type="button" wire:click="deletResponse({{ $response->id }})" > <i
                                     class='bx bxs-trash text-xl text-red-500 hover:text-red-700'></i>
+                            </button> --}}
+
+                            {{-- <button type="button" wire:click="$dispatch('triggerDelete', {{ $response->id }})" class="delete-btn"> --}}
+                            <button type="button" class="delete-btn" data-item-id="{{ $response->id }}">
+                                <i class="bx bx-trash font-medium text-red-500 hover:text-red-700 mr-1 text-lg"></i>
                             </button>
 
                         </td>
@@ -84,3 +88,75 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('click', function(event) {
+            if (event.target.closest(
+                    '.delete-btn')) {
+
+                let button = event.target.closest('.delete-btn');
+                let itemId = button.getAttribute('data-item-id');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('delete-response', {
+                            id: itemId
+                        });
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your item has been deleted.",
+                            icon: "success",
+                            confirmButtonColor: "#56ab2f"
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                });
+
+            }
+        })
+    });
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     let deleteButtons = document.querySelectorAll('.delete-btn');
+
+    //     deleteButtons.forEach(function(button) {
+    //         button.addEventListener('click', function() {
+    //             let itemId = button.getAttribute('data-item-id');
+
+    //             Swal.fire({
+    //                 title: "Are you sure?",
+    //                 text: "You won't be able to revert this!",
+    //                 icon: "warning",
+    //                 showCancelButton: true,
+    //                 confirmButtonColor: "#3085d6",
+    //                 cancelButtonColor: "#d33",
+    //                 confirmButtonText: "Yes, delete it!"
+    //             }).then((result) => {
+
+    //                 if (result.isConfirmed) {
+    //                     Livewire.dispatch('delete-response', {
+    //                         id: itemId
+    //                     });
+    //                     Swal.fire({
+    //                         title: "Deleted!",
+    //                         text: "Your item has been deleted.",
+    //                         icon: "success",
+    //                         confirmButtonColor: "#56ab2f"
+    //                     }).then(() => {
+    //                         location.reload();
+    //                     });
+    //                 }
+    //             });
+    //         });
+    //     });
+    // });
+</script>

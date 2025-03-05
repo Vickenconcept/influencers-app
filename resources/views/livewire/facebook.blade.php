@@ -1,18 +1,17 @@
-<div class="px-3 pb-20 overflow-y-auto h-screen" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
+<div class="px-3 pb-32 overflow-y-auto h-screen" x-data="{ facebook_influencer_dettail: null, modalIsOpen: false }">
 
-    <div class="flex items-center space-x-3 text-sm">
+    <div class="flex items-center space-x-3 text-sm mt-4">
         <p class="bg-white px-5 p-2 rounded-md text-slate-500 font-medium ">Apply Filters</p>
         <p class="text-slate-500 capitalize">Use filters to further refine search</p>
     </div>
 
     <div class="my-6">
-        <div class="rounded-3xl border border-gray-200 bg-white/30 p-6 shadow-sm">
-            <div class="mt-8 grid grid-cols-1 gap-6 grid-cols-3 md:grid-cols-3 lg:grid-cols-5">
+        <div class="rounded-3xl border border-gray-200 bg-white/60 p-6 shadow-sm">
+            <div class="mt-8 grid grid-cols-1 gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
                 <div class="flex flex-col">
-                    <label for="name" class="text-slate-800 text-sm font-medium">Name</label>
+                    <label for="name" class="text-slate-800 text-sm font-medium">Range</label>
                     <!-- Dropdown select for predefined ranges -->
-                    <select wire:model="followersRange" wire:change="getFiltersByRange()"
-                        class="form-control">
+                    <select wire:model="followersRange" wire:change="getFiltersByRange()" class="form-control" :class="'!bg-white'">
                         <option value="0-10000">Less than 10k</option>
                         <option value="10000-50000">10k - 50k</option>
                         <option value="50000-500000">50k - 500k</option>
@@ -25,35 +24,48 @@
                     <label for="minRange" class="text-slate-800 text-sm font-medium">Min Followers:</label>
 
                     <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers"
-                        min="0"
-                        class="form-control">
+                        min="0" class="form-control" :class="'!bg-white'">
                 </div>
 
                 <div class="flex flex-col">
                     <label for="maxRange" class="text-slate-800 text-sm font-medium">Max Followers:</label>
                     <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers"
-                        min="0"
-                        class="form-control">
+                        min="0" class="form-control" :class="'!bg-white'">
                 </div>
 
                 <div class="flex flex-col">
-                    <span  class="text-sm font-medium text-transparent">Verified Accounts</span>
-                    <label for="isVerified"
-                        class="form-control">
-                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"
-                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
-                        <span class="">Verified Accounts</span>
-                    </label>
+                    <span class="text-sm font-medium text-transparent">Verified Accounts</span>
+                    <div  class="bg-white border border-gray-300 rounded-lg  block w-full py-2.5 px-2  flex items-center space-x-1">
+                        <label for="isVerified" class="relative inline-flex items-center  cursor-pointer">
+                            <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"
+                                class="sr-only peer"
+                                @if ($isVerified) checked @endif>
+                            <div
+                                class="w-11 z-0 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#79d2a6]  rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all 
+                            {{ $isVerified ? 'peer-checked:bg-[#79d2a6]' : 'peer-checked:bg-[#79d2a6]' }}
+                            ">
+                            </div>
+                        </label>
+                        <span class="whitespace-nowrap">Verified Accounts</span>
+                    </div>
                 </div>
 
+
                 <div class="flex flex-col">
-                    <span  class="text-sm font-medium text-transparent">Email Accounts</span>
-                    <label for="hasEmail"
-                        class="form-control">
-                        <input type="checkbox" wire:model="hasEmail" name="hasEmail" id="hasEmail"
-                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
-                        <span class="">Email Accounts</span>
-                    </label>
+                    <span class="text-sm font-medium text-transparent">Email Accounts</span>
+                    <div  class="bg-white border border-gray-300 rounded-lg  block w-full py-2.5 px-2  flex items-center space-x-1">
+                        <label for="hasEmail" class="relative inline-flex items-center  cursor-pointer">
+                            <input type="checkbox" wire:model="hasEmail" name="hasEmail" id="hasEmail"
+                                class="sr-only peer"
+                                @if ($hasEmail) checked @endif>
+                            <div
+                                class="w-11 z-0 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#79d2a6]  rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all 
+                            {{ $hasEmail ? 'peer-checked:bg-[#79d2a6]' : 'peer-checked:bg-[#79d2a6]' }}
+                            ">
+                            </div>
+                        </label>
+                        <span class="whitespace-nowrap">Email Accounts</span>
+                    </div>
                 </div>
 
             </div>
@@ -62,10 +74,12 @@
                 <button wire:click="getInfluencer()"
                     class="active:scale-95 rounded-lg bg-gradient-to-r from-[#525FFD] via-[#CD89FF] to-[#B5FFAB] px-6 py-2 text-white outline-none focus:ring hover:opacity-90 flex items-center space-x-2">
                     <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                          </svg>
-                          
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+
                     </span>
                     <span>Search</span>
                 </button>
@@ -75,69 +89,16 @@
         </div>
     </div>
 
-
-
-    <div class="my-6">
-        <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
-            <h2 class="text-stone-700 text-xl font-bold">Apply filters</h2>
-            <p class="mt-1 text-sm">Use filters to further refine search</p>
-            <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                <div class="flex flex-col">
-                    <label for="name" class="text-stone-600 text-sm font-medium">Name</label>
-                    <!-- Dropdown select for predefined ranges -->
-                    <select wire:model="followersRange" wire:change="getFiltersByRange()"
-                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                        <option value="0-10000">Less than 10k</option>
-                        <option value="10000-50000">10k - 50k</option>
-                        <option value="50000-500000">50k - 500k</option>
-                        <option value="500000-1000000">500k - 1M</option>
-                        <option value="1000000+">1M+</option>
-                    </select>
-                </div>
-
-                <div class="flex flex-col">
-                    <label for="minRange" class="text-stone-600 text-sm font-medium">Min Followers:</label>
-
-                    <input type="number" id="minRange" wire:model="minRange" placeholder="Min followers"
-                        min="0"
-                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                </div>
-
-                <div class="flex flex-col">
-                    <label for="maxRange" class="text-stone-600 text-sm font-medium">Max Followers:</label>
-                    <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max followers"
-                        min="0"
-                        class="mt-2 block w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                </div>
-
-                <div class="flex flex-col">
-                    <label for="isVerified"
-                        class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
-                        <input type="checkbox" wire:model="isVerified" name="isVerified" id="isVerified"
-                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
-                        <span class="font-bold">isVerified</span>
-                    </label>
-                </div>
-
-                <div class="flex flex-col">
-                    <label for="hasEmail"
-                        class="mt-2  w-full rounded-md border border-gray-200 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 flex items-center space-x-2">
-                        <input type="checkbox" wire:model="hasEmail" name="hasEmail" id="hasEmail"
-                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2 ">
-                        <span class="font-bold">hasEmail</span>
-                    </label>
-                </div>
-
-            </div>
-
-            <div class="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">
-                <button wire:click="resetData()"
-                    class="active:scale-95 rounded-lg bg-gray-200 px-8 py-2 font-medium text-gray-600 outline-none focus:ring hover:opacity-90">Reset</button>
-                <button wire:click="getInfluencer()"
-                    class="active:scale-95 rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none focus:ring hover:opacity-90">Search</button>
-            </div>
+    {{-- <label class="relative inline-flex items-center  cursor-pointer">
+        <input type="checkbox" value="1" class="sr-only peer" onchange="this.form.submit()"
+            @if (auth()->user()->use_stripe) checked @endif>
+        <div
+            class="w-11 z-0 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#79d2a6]  rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all 
+            {{ auth()->user()->use_stripe ? 'peer-checked:bg-[#79d2a6]' : 'peer-checked:bg-[#79d2a6]' }}
+              
+            ">
         </div>
-    </div>
+    </label> --}}
 
     <div class="grid sm:grid-cols-3 gap-2">
         <!-- component -->
@@ -381,12 +342,12 @@
                                         <label for="name"
                                             class="block mb-2 text-sm font-medium text-gray-900 ">Name *</label>
                                         <input type="text" name="name" id="name" wire:model.live="name"
-                                            class="form-control" placeholder="Enter Group name" required />
+                                            class="form-control" :class="'!bg-white'" placeholder="Enter Group name" required />
                                     </div>
                                     <div>
                                         <label for="description"
                                             class="block mb-2 text-sm font-medium text-gray-900 ">Description</label>
-                                        <textarea name="description" id="description" wire:model.live="description" class="form-control"></textarea>
+                                        <textarea name="description" id="description" wire:model.live="description" class="form-control" :class="'!bg-white'"></textarea>
                                     </div>
                                     <button type="submit" @click="tab = 'group_tab'" wire:loading.attr="disabled"
                                         wire:target="creatGroup"
@@ -438,7 +399,8 @@
                 intervalId: null
             }" x-init="intervalId = setInterval(() => {
                 currentIndex = (currentIndex + 1) % messages.length;
-            }, 4000);" x-text="messages[currentIndex]">
+            }, 4000);"
+                x-text="messages[currentIndex]">
             </p>
         </div>
     </div>

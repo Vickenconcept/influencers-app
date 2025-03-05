@@ -1,23 +1,125 @@
-<div class="px-3 pb-20 overflow-y-auto h-screen" x-data="{ youtube_influencer_dettail: null, modalIsOpen: false }">
+<div class="px-3 pb-32 overflow-y-auto h-screen" x-data="{ youtube_influencer_dettail: null, modalIsOpen: false }">
     {{-- Stop trying to control. --}}
-    {{-- <div>
-        <!-- Dropdown select for predefined ranges -->
-        <select wire:model="subscribersRange" wire:change="getFiltersByRange()">
-            <option value="0-10000">Less than 10k</option>
-            <option value="10000-50000">10k - 50k</option>
-            <option value="50000-500000">50k - 500k</option>
-            <option value="500000-1000000">500k - 1M</option>
-            <option value="1000000+">1M+</option>
-        </select>
-    
-        <!-- Custom Range inputs (Min and Max) -->
-        
-    </div> --}}
-
-
-
+    <div class="flex items-center space-x-3 text-sm mt-4">
+        <p class="bg-white px-5 p-2 rounded-md text-slate-500 font-medium ">Apply Filters</p>
+        <p class="text-slate-500 capitalize">Use filters to further refine search</p>
+    </div>
 
     <div class="my-6">
+        <div class="rounded-3xl border border-gray-200 bg-white/60 py-6 px-4 shadow-sm">
+            <div class="mt-8 grid grid-cols-1 gap-1 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                <div class="flex flex-col">
+                    <label for="name" class="text-slate-800 text-sm font-medium">Range</label>
+                    <!-- Dropdown select for predefined ranges -->
+                    <select wire:model="subscribersRange" wire:change="getFiltersByRange()" class="form-control" :class="'!bg-white'">
+                        <option value="0-10000">Less than 10k</option>
+                        <option value="10000-50000">10k - 50k</option>
+                        <option value="50000-500000">50k - 500k</option>
+                        <option value="500000-1000000">500k - 1M</option>
+                        <option value="1000000+">1M+</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="minRange" class="text-slate-800 text-sm font-medium">Min Followers:</label>
+
+                    <input type="number" id="minRange" wire:model="minRange" placeholder="Min Subscriber"
+                        min="0" class="form-control" :class="'!bg-white'">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="maxRange" class="text-slate-800 text-sm font-medium">Max Followers:</label>
+                    <input type="number" id="maxRange" wire:model="maxRange" placeholder="Max Subscriber"
+                        min="0" class="form-control" :class="'!bg-white'">
+                </div>
+
+                <div class="flex flex-col">
+                    <span class="text-sm font-medium text-transparent">Email Accounts</span>
+                    <div  class="bg-white border border-gray-300 rounded-lg  block w-full py-2.5 px-2  flex items-center space-x-1">
+                        <label for="hasEmail" class="relative inline-flex items-center  cursor-pointer">
+                            <input type="checkbox" wire:model="hasEmail" name="hasEmail" id="hasEmail"
+                                class="sr-only peer"
+                                @if ($hasEmail) checked @endif>
+                            <div
+                                class="w-11 z-0 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#79d2a6]  rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all 
+                            {{ $hasEmail ? 'peer-checked:bg-[#79d2a6]' : 'peer-checked:bg-[#79d2a6]' }}
+                            ">
+                            </div>
+                        </label>
+                        <span class="whitespace-nowrap">Email Accounts</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="topic"
+                        class="text-stone-600 text-sm font-medium">Topic:
+                    </label>
+                    <input type="text" id="topic" class="form-control" :class="'!bg-white'" wire:model="topic" placeholder="Enter Topic">
+                </div>
+                <div class="flex flex-col">
+                    <label for="niche"
+                        class="text-stone-600 text-sm font-medium">Niche:
+                    </label>
+                    <input type="text" id="niche" class="form-control" :class="'!bg-white'" wire:model="niche" placeholder="Enter niche">
+                </div>
+
+
+                <div class="flex flex-col">
+                    <label for="name" class="text-stone-600 text-sm font-medium">Country</label>
+                    <select wire:model.live="country"
+                        class="form-control" :class="'!bg-white'">
+                        <option value="USA">United States</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="France">France</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Spain">Spain</option>
+                        <option value="China">China</option>
+                        <option value="Japan">Japan</option>
+                        <option value="India">India</option>
+                        <option value="Australia">Australia</option>
+                        <option value="South_Africa">South Africa</option>
+                        <option value="Nigeria">Nigeria</option>
+                        <option value="Egypt">Egypt</option>
+                        <option value="Russia">Russia</option>
+                        <option value="South_Korea">South Korea</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Vietnam">Vietnam</option>
+                    </select>
+                </div>
+
+                
+               
+
+            </div>
+
+            <div class="mt-10 grid w-full grid-cols-2 justify-center space-x-4 md:flex">
+                <button wire:click="getInfluencer()"
+                    class="active:scale-95 rounded-lg bg-gradient-to-r from-[#525FFD] via-[#CD89FF] to-[#B5FFAB] px-6 py-2 text-white outline-none focus:ring hover:opacity-90 flex items-center space-x-2">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+
+                    </span>
+                    <span>Search</span>
+                </button>
+                <button wire:click="resetData()"
+                    class="active:scale-95 rounded-lg  px-8 py-2 text-gray-600 outline-none focus:ring hover:opacity-90 border border-slate-600 ">Reset</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    {{-- <div class="my-6">
         <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-lg">
             <h2 class="text-stone-700 text-xl font-bold">Apply filters</h2>
             <p class="mt-1 text-sm">Use filters to further refine search</p>
@@ -109,7 +211,7 @@
                     class="active:scale-95 rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none focus:ring hover:opacity-90">Search</button>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="grid sm:grid-cols-3 gap-2">
         <!-- component -->
@@ -356,12 +458,12 @@
                                         <label for="name"
                                             class="block mb-2 text-sm font-medium text-gray-900 ">Name *</label>
                                         <input type="text" name="name" id="name" wire:model.live="name"
-                                            class="form-control" placeholder="Enter Group name" required />
+                                            class="form-control" :class="'!bg-white'" placeholder="Enter Group name" required />
                                     </div>
                                     <div>
                                         <label for="description"
                                             class="block mb-2 text-sm font-medium text-gray-900 ">Description</label>
-                                        <textarea name="description" id="description" wire:model.live="description" class="form-control"></textarea>
+                                        <textarea name="description" id="description" wire:model.live="description" class="form-control" :class="'!bg-white'"></textarea>
                                     </div>
                                     <button type="submit" @click="tab = 'group_tab'" wire:loading.attr="disabled"
                                         wire:target="creatGroup"

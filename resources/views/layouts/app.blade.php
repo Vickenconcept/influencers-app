@@ -28,7 +28,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://unpkg.com/@alpinejs/focus" defer></script>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -40,7 +42,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-    
+
 
     <style>
         .note-group-select-from-files {
@@ -101,16 +103,21 @@
     @yield('styles')
 
 
+
+
 </head>
 
 <body class="h-screen ">
+    <marquee direction="right" scrollamount="60" class="z-50 fixed w-full hidden" id="hiddenLinearPreloader">
+        <div class="bg-gradient-to-r from-[#0F1523] from-70%  to-[#B5FFAB] w-[700px] p-1 rounded-full"></div>
+    </marquee>
     <div id="app" class="h-full  text-gray-700 ">
         <x-notification />
         <x-navbar />
         <x-sidebar />
 
         <div class="h-full sm:ml-64 bg-slate-200 pt-20 overflow-y-hidden">
-        {{-- <div class="h-full sm:ml-64 bg-[#F0F3F7] pt-20 overflow-y-hidden"> --}}
+            {{-- <div class="h-full sm:ml-64 bg-[#F0F3F7] pt-20 overflow-y-hidden"> --}}
             {{ $slot }}
         </div>
     </div>
@@ -119,12 +126,7 @@
 
     @yield('scripts')
 
-    <script>
-        window.addEventListener('beforeunload', function(event) {
-            var hiddenText = document.getElementById('hiddenText');
-            hiddenText.classList.remove('hidden');
-        });
-    </script>
+
 
     @livewireScripts
 
@@ -133,6 +135,23 @@
             Livewire.on('refreshPage', () => {
                 location.reload();
             });
+        });
+    </script>
+
+    <script>
+        window.addEventListener('beforeunload', function(event) {
+            var hiddenText = document.getElementById('hiddenText');
+            hiddenText.classList.remove('hidden');
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var hiddenLinearPreloader = document.getElementById("hiddenLinearPreloader");
+
+            hiddenLinearPreloader.classList.remove("hidden");
+
+            setTimeout(function() {
+                hiddenLinearPreloader.classList.add("hidden");
+            }, 2000);
         });
     </script>
 

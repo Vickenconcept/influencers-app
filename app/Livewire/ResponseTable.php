@@ -7,12 +7,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class ResponseTable extends Component
 {
     use WithPagination;
     public $status;
 
+    #[On('delete-response')]
     public function deletResponse($id)
     {
         $response = DB::table('campaign_influencer')->where('id', $id)->first();

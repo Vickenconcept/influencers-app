@@ -6,7 +6,7 @@
      'favicon' => asset('images/fav-image.png'),
  ])
  <x-guest-layout>
-     <div class="min-w-screen min-h-screen bg-white  flex items-center justify-center px-5 py-5">
+     <div class="min-w-screen min-h-screen bg-white  flex items-center justify-center px-1 md:px-5 py-5">
          <div class=" text-gray-500  w-full  " style="max-width:1000px">
 
 
@@ -17,14 +17,14 @@
 
              </div>
 
-             <div class="md:flex items-end 1-full  bg-[#B8FFAB] rounded-3xl px-10 lg:-mt-36">
+             <div class="md:flex items-center lg:items-end 1-full  bg-[#B8FFAB] rounded-3xl px-3 md:px-10 lg:-mt-36">
                  <div class="w-full md:w-1/2 hidden md:flex">
                      <img src="{{ asset('images/login-image.png') }}" alt="">
                  </div>
 
                  <div class="w-full md:w-1/2">
                      <form action="{{ route('auth.login') }}" method="post"
-                         class="w-full py-10 px-5 md:px-10  rounded-2xl ">
+                         class="w-full py-10 px-1 md:px-10  rounded-2xl ">
 
                          @csrf
 
@@ -35,7 +35,7 @@
                              <h1 class="font-bold text-2xl text-gray-900">Sign in to your Account</h1>
                              <p>Please enter your details</p>
                          </div>
-                         @if ($errors->any())
+                         {{-- @if ($errors->any())
                              <div class="alert alert-danger">
                                  <ul class="text-red-400 bg-red-200 p-2 rounded-md">
                                      @foreach ($errors->all() as $error)
@@ -43,7 +43,7 @@
                                      @endforeach
                                  </ul>
                              </div>
-                         @endif
+                         @endif --}}
 
                          <x-session-msg />
 
@@ -59,7 +59,7 @@
                                          </div>
                                          <input type="email"
                                              class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-black ring-0"
-                                             placeholder="johnsmith@example.com" name="email"
+                                             placeholder="email@example.com" name="email"
                                              value="{{ old('email') }}">
                                      </div>
                                  </div>

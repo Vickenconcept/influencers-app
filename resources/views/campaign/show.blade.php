@@ -5,10 +5,10 @@
 
     <div class="px-3 pb-28 overflow-y-auto h-screen  ">
         <div class="flex justify-between items-center border-b pb-5 mb-5">
-            <h1 class="text-2xl font-medium capitalize ">{{ $campaign->title }}</h1>
+            <h1 class="text-2xl font-medium capitalize "></h1>
             <div>
                 <button type="button" data-item-id="{{ $campaign->id }}"
-                    class="delete-btn bg-gray-200 hover:bg-red-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
+                    class="delete-btn bg-gray-50 hover:bg-red-500 group  px-3 py-2 rounded-md text-sm flex items-center delay-100 transition-all duration-500 ease-in-out">
                     <i
                         class="bx bx-trash font-medium text-red-500 group-hover:text-white mr-1 text-lg delay-100 transition-all duration-500 ease-in-out"></i>
 
@@ -27,7 +27,7 @@
                     <div class="w-full h-96 overflow-y-auto" x-data="{ selectedType: @js($campaign->type) }">
                         <label for="type_1"
                             class="rounded-lg shadow-md border mb-6 overflow-hidden block cursor-pointer hover:grayscale-50 hover:shadow-xl"
-                            :class="{ 'border-blue-500 border-2': selectedType == '1' }">
+                            :class="{ 'border-[#0F1523] border-2': selectedType == '1' }">
                             <img src="https://placehold.co/600x400?text=Hello+World" class="w-fulll h-full object-cover"
                                 alt="image">
                             <input type="radio" name="type" class="hidden" id="type_1" value="1"
@@ -35,7 +35,7 @@
                         </label>
                         <label for="type_2"
                             class="rounded-lg shadow-md border mb-6 overflow-hidden block cursor-pointer hover:grayscale-50 hover:shadow-xl"
-                            :class="{ 'border-blue-500 border-2': selectedType == '2' }">
+                            :class="{ 'border-[#0F1523] border-2': selectedType == '2' }">
                             <img src="https://placehold.co/600x400?text=Hello+World" class="w-fulll h-full object-cover"
                                 alt="image">
                             <input type="radio" name="type" class="hidden" id="type_2" value="2"
@@ -43,7 +43,7 @@
                         </label>
                         <label for="type_3"
                             class="rounded-lg shadow-md border mb-6 overflow-hidden block cursor-pointer hover:grayscale-50 hover:shadow-xl"
-                            :class="{ 'border-blue-500 border-2': selectedType == '3' }">
+                            :class="{ 'border-[#0F1523] border-2': selectedType == '3' }">
                             <img src="https://placehold.co/600x400?text=Hello+World" class="w-fulll h-full object-cover"
                                 alt="image">
                             <input type="radio" name="type" class="hidden" id="type_3" value="3"

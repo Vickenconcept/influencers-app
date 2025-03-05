@@ -7,9 +7,9 @@
         {{-- <h1 class="text-2xl font-medium  capitalize text-transparent">dont show</h1> --}}
 
         <div class="">
-            <div class="grid gap-14 sm:grid-cols-2 md:grid-cols-4 md:gap-2 mt-10 "  >
+            <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-4 md:gap-2 mt-10 "  >
 
-                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
+                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]/50  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
                     id="facebook">
                     <div class="flex items-center space-x-3">
                         <span class="rounded-md bg-[#B5FFAB] p-1">
@@ -28,7 +28,7 @@
                         </a>
                     </p>
                 </div>
-                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
+                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]/50  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
                     id="instagram">
                     <div class="flex items-center space-x-3">
                         <span class="rounded-md bg-[#B5FFAB] p-1">
@@ -47,7 +47,7 @@
                         </a>
                     </p>
                 </div>
-                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
+                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]/50  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
                     id="youtube">
                     <div class="flex items-center space-x-3">
                         <span class="rounded-md bg-[#B5FFAB] p-1">
@@ -66,7 +66,7 @@
                         </a>
                     </p>
                 </div>
-                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
+                <div class="p-4 bg-gradient-to-br from-[#FFFFFF] from-30% to-[#B5FFAB]/50  rounded-2xl shadow-md space-y-8 border-2 hover:!border-slate-900 transition duration-500 ease-in-out "
                     id="tiktok">
                     <div class="flex items-center space-x-3">
                         <span class="rounded-md bg-[#B5FFAB] p-1">

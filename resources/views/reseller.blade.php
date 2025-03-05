@@ -2,18 +2,15 @@
     @section('title')
     {{ "reseller" }}
 @endsection
-    <div x-data="{ openModal: false }" class="px-3 pb-20 overflow-y-auto h-screen">
+    <div x-data="{ openModal: false }" class="px-3 pb-32 overflow-y-auto h-screen">
         <div class=" flex justify-between">
             <div class=" flex space-x-1 items-baseline">
-                <div>
-                    <h3 class=" font-medium text-2xl">Resell</h3>
-                </div>
                 <span class="text-gray-500">Manage Users</span>
             </div>
 
             <div class=" mb-8">
                 <button
-                    class="bg-orange-500 hover:bg-orange-600 hover:shadow px-4 py-1.5 font-semibold text-blue-50 rounded-md "
+                    class="btn"
                     @click="openModal = true"><i class="bx bx-plus mr-2"></i> Register user</button>
             </div>
         </div>
@@ -88,7 +85,7 @@
                         </div>
 
                         <div class="pt-3">
-                            <button type="submit" class="btn-primary2  ">Create User</button>
+                            <button type="submit" class="btn">Create User</button>
                         </div>
                     </form>
                 </div>

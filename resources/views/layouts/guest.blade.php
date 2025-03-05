@@ -31,6 +31,9 @@
 </head>
 
 <body class="h-full">
+    <marquee direction="right" scrollamount="60" class="z-50 fixed w-full hidden" id="hiddenLinearPreloader">
+        <div class="bg-gradient-to-r from-[#0F1523] from-70%  to-[#B5FFAB] w-[700px] p-1 rounded-full"></div>
+    </marquee>
     {{ $slot }}
 
 </body>
@@ -41,7 +44,18 @@
     window.addEventListener('beforeunload', function(event) {
         var hiddenText = document.getElementById('hiddenText');
         hiddenText.classList.remove('hidden');
+        hiddenLinearPreloader.classList.remove("hidden");
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+            var hiddenLinearPreloader = document.getElementById("hiddenLinearPreloader");
+
+            hiddenLinearPreloader.classList.remove("hidden");
+
+            setTimeout(function() {
+                hiddenLinearPreloader.classList.add("hidden");
+            }, 2000);
+        });
 </script>
 
 

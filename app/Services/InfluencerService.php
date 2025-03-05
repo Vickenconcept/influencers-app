@@ -52,7 +52,7 @@ class InfluencerService
         );
 
 
-        // dd($filters);
+        dd($filters);
         $maxResults = 10;
         $sortBy = $platform == 'youtube' ? 'subscribers' : 'followers';
         $response = $this->client->request('POST', $this->config['searchEndpoint'], [

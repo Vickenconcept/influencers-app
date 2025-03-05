@@ -6,13 +6,13 @@
                     <th scope="col" class="px-6 py-3 bg-gray-50 ">
                         Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 bg-gray-100">
                         Email
                     </th>
                     <th scope="col" class="px-6 py-3 bg-gray-50 ">
                         Date
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 bg-gray-100">
 
                     </th>
                 </tr>
@@ -24,13 +24,13 @@
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50  ">
                             {{ $user->name }}
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 bg-gray-100">
                             {{ $user->email }}
                         </td>
                         <td class="px-6 py-4 bg-gray-50 ">
                             {{ $user->created_at }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 bg-gray-100">
 
                             <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"> <i
                                     class='bx bxs-trash text-xl text-red-500 hover:text-red-700'></i>
